@@ -63,10 +63,10 @@ fi
 menu(){
 
 
-	echo -e "$white$bold 1- Scan > "
-	echo -e "$white$bold 2- Analyze Meticulously > "
-	echo -e "$white$bold 3- info > "
-	echo -e "$white$bold 4- Exit > "
+	echo -e "$white$bold 1 > Scan  $reset"
+	echo -e "$white$bold 2 > Analyze Meticulously  $reset"
+	echo -e "$white$bold 3 > Save Device Info $reset "
+	echo -e "$white$bold 4 > Exit  $reset"
 
 	read response
 
@@ -77,8 +77,10 @@ menu(){
 	elif [ "$response" == 3 ];then
 		info
 	elif [ "$response" == 4 ];then
+		echo -e "$red$white$bold EXIT "
 		exit
 	else
+		echo -e "$red$white$bold !!! Please Enter Valid Number $reset"
 		menu
 	fi
 
@@ -93,11 +95,11 @@ if [ "$devices" ];then
 	state=`adb get-state`
 	dev_path=`adb get-devpath`
 	
-	echo -e "$bold$white ======= Device Info =======\n"
-	echo -e "$bold$white Serial : $serial"
-	echo -e "$bold$white State :  $state"
-	echo -e "$bold$white Device Path : $dev_path\n\n $reset"
-	
+	echo -e "$cyan ======= Device Information ======="
+	echo -e "$cyan Serial : $serial"
+	echo -e "$cyan State :  $state"
+	echo -e "$cyan Device Path : $dev_path $reset"
+	echo -e "$cyan ================================== $reset"
 
 else
 	echo -e "$red$white No Device Detected [ ERROR ] "
@@ -242,6 +244,15 @@ scan(){
 
 info(){
 
+	info_time=`date "+%Y/%m/%d-%H:%M"`
+
+	info_path="/home/$user/L4A/Documents/$info_time"
+	if [ -d "$info_path" ];then
+		true
+	else
+		mkdir /home/$user/L4A/Documents/$info_time
+	fi
+
 	activity=`adb shell dumpsys activity`
 	backup=`adb shell dumpsys audio`
 	content=`adb shell dumpsys content`
@@ -252,21 +263,26 @@ info(){
 	
 
 	serial=`adb get-serialno`
-	echo $activity > $FILE_PATH/Documents/$serial-Activity.txt
-	echo $backup > $FILE_PATH/Documents/$serial-Backup.txt
-	echo $content > $FILE_PATH/Documents/$serial-Content.txt
-	echo $connectivity > $FILE_PATH/Documents/$serial-Connectivity.txt
-	echo $backup > $FILE_PATH/Documents/$serial-Backup.txt
-	echo $battery > $FILE_PATH/Documents/$serial-Battery.txt
-	echo $display > $FILE_PATH/Documents/$serial-Display.txt
-
+	echo $activity > $info_path/$serial-Activity.txt
+	echo $backup > $info_path/$serial-Backup.txt
+	echo $content > $info_path/$serial-Content.txt
+	echo $connectivity > $info_path/$serial-Connectivity.txt
+	echo $backup > $info_path/$serial-Backup.txt
+	echo $battery > $info_path/$serial-Battery.txt
+	echo $display > $info_path/$serial-Display.txt
+	
+	
+	echo -e "$white$bold All Data Saved in /home/$user/L4A/Documents"
+	echo -e "$white$bold Number of Files Saved in /home/$user/L4A/Documents : 7 "
 }
 
 
 
 
 am(){
-	echo -e "$white$bold ==================== Meticulously Analyze ==================== "
+	echo -e "$white$bold ==================== Meticulously Analyze ==================== \n"
+	echo -e "$white$bold In this section, you can view the logs instantly"
+	sleep 3
 	adb logcat
 }
 
