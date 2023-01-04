@@ -1,6 +1,6 @@
 # Linux4Android
 
-connect & Debug || Malicious Activity
+connect & Debug & Scan for Malicious Activity
 
 
 # Install
