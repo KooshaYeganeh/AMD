@@ -112,7 +112,7 @@ fi
 
 scan(){
 
-
+scan_start_time=`date "+%Y/%m/%d-%H:%M:%S"`
 
 ## Basic Database of app:
 ## https://www.forbes.com/sites/zakdoffman/2019/12/19/avoid-these-100-android-apps-hiding-malicious-malware-new-fraud-arms-race-underway/?sh=372645f539e8
@@ -236,6 +236,12 @@ scan(){
 				sleep 0.2
 		fi
 	done
+
+scan_end_time=`date "+%Y/%m/%d-%H:%M:%S"`
+
+
+echo -e "$white$bold Scan Start Time : $scan_start_time"
+echo -e "$white$bold Scan Start Time : $scan_end_time"
 
 }
 
