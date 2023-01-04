@@ -22,6 +22,30 @@ adb start-server
 user=$USER # Get User of system
 
 
+echo -e """
+
+
+
+	██╗  ██╗██╗   ██╗ ██████╗ ███╗   ██╗██╗   ██╗███████╗     █████╗ ███╗   ██╗██████╗ ██████╗  ██████╗ ██╗██████╗ 
+	██║ ██╔╝╚██╗ ██╔╝██╔════╝ ████╗  ██║██║   ██║██╔════╝    ██╔══██╗████╗  ██║██╔══██╗██╔══██╗██╔═══██╗██║██╔══██╗
+	█████╔╝  ╚████╔╝ ██║  ███╗██╔██╗ ██║██║   ██║███████╗    ███████║██╔██╗ ██║██║  ██║██████╔╝██║   ██║██║██║  ██║
+	██╔═██╗   ╚██╔╝  ██║   ██║██║╚██╗██║██║   ██║╚════██║    ██╔══██║██║╚██╗██║██║  ██║██╔══██╗██║   ██║██║██║  ██║
+	██║  ██╗   ██║   ╚██████╔╝██║ ╚████║╚██████╔╝███████║    ██║  ██║██║ ╚████║██████╔╝██║  ██║╚██████╔╝██║██████╔╝
+	╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚══════╝    ╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝╚═════╝ 
+														       
+			███████╗ ██████╗ █████╗ ███╗   ██╗███╗   ██╗███████╗██████╗                                    
+			██╔════╝██╔════╝██╔══██╗████╗  ██║████╗  ██║██╔════╝██╔══██╗                                   
+			███████╗██║     ███████║██╔██╗ ██║██╔██╗ ██║█████╗  ██████╔╝                                   
+			╚════██║██║     ██╔══██║██║╚██╗██║██║╚██╗██║██╔══╝  ██╔══██╗                                   
+			███████║╚██████╗██║  ██║██║ ╚████║██║ ╚████║███████╗██║  ██║                                   
+			╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝                                   
+														       
+
+
+                                                                                                                                                                               
+
+"""
+
 
 
 FILE_PATH="/home/$user/L4A"
@@ -33,33 +57,16 @@ else
 fi
 
 
-IMAGE_PATH="/home/$user/L4A/Pictures"
-
-if [ -d "$IMAGE_PATH" ];then
-	true
-else
-	mkdir /home/$user/L4A/Pictures
-fi
 
 
 
-VIDEOS_PATH="/home/$user/L4A/Videos"
-
-if [ -d "$VIDEOS_PATH" ];then
-	true
-else
-	mkdir /home/$user/L4A/Videos
-fi
+menu(){
 
 
-DOCUMENTS_PATH="/home/$user/L4A/Documents"
+	echo -e "$white$bold"
 
-if [ -d "$DOCUMENTS_PATH" ];then
-	true
-else
-	mkdir /home/$user/L4A/Documents
-fi
 
+}
 
 
 devices=` adb devices  | grep -w device`
@@ -72,6 +79,7 @@ if [ "$devices" ];then
 	echo -e "$bold$white Serial : $serial"
 	echo -e "$bold$white State :  $state"
 	echo -e "$bold$white Device Path : $dev_path\n\n $reset"
+	menu
 
 else
 	echo -e "$red$white No Device Detected [ ERROR ] "
@@ -84,7 +92,10 @@ fi
 
 scan(){
 
-# https://www.forbes.com/sites/zakdoffman/2019/12/19/avoid-these-100-android-apps-hiding-malicious-malware-new-fraud-arms-race-underway/?sh=372645f539e8
+
+
+## Basic Database of app:
+## https://www.forbes.com/sites/zakdoffman/2019/12/19/avoid-these-100-android-apps-hiding-malicious-malware-new-fraud-arms-race-underway/?sh=372645f539e8
 
 	ports=`adb shell netstat -na | grep -w LISTEN | cut -d":" -f2 | cut -d " " -f1  | grep -o "[0-9]*"`
 
@@ -209,7 +220,6 @@ scan(){
 }
 
 
-scan
 
 
 info(){
@@ -236,31 +246,5 @@ info(){
 
 
 
-pull(){
-
-	adb push /home/$user/sdcard_push /sdcard
-
-}
-
-
-
-
-push(){
-
-
-	adb pull /sdcard /home/$user/L4A/sdcard_pull
-
-
-}
-
-
-
-backup (){
-
-
-	adb backup //
-
-
-}
 
 
