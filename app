@@ -22,7 +22,7 @@ adb start-server
 user=$USER # Get User of system
 
 
-echo -e """
+echo -e """$white
 
 
 
@@ -44,7 +44,7 @@ echo -e """
 
                                                                                                                                                                                
 
-"""
+$reset"""
 
 
 
@@ -63,7 +63,25 @@ fi
 menu(){
 
 
-	echo -e "$white$bold"
+	echo -e "$white$bold 1- Scan > "
+	echo -e "$white$bold 2- Analyze Meticulously > "
+	echo -e "$white$bold 3- info > "
+	echo -e "$white$bold 4- Exit > "
+
+	read response
+
+	if [ "$response" == 1 ];then
+		scan
+	elif [ "$response" == 2 ];then
+		am
+	elif [ "$response" == 3 ];then
+		info
+	elif [ "$response" == 4 ];then
+		exit
+	else
+		menu
+	fi
+
 
 
 }
@@ -79,7 +97,7 @@ if [ "$devices" ];then
 	echo -e "$bold$white Serial : $serial"
 	echo -e "$bold$white State :  $state"
 	echo -e "$bold$white Device Path : $dev_path\n\n $reset"
-	menu
+	
 
 else
 	echo -e "$red$white No Device Detected [ ERROR ] "
@@ -247,4 +265,11 @@ info(){
 
 
 
+am(){
+	echo -e "$white$bold ==================== Meticulously Analyze ==================== "
+	adb logcat
+}
 
+
+
+menu
