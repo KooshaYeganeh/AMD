@@ -66,7 +66,8 @@ menu(){
 	echo -e "$white$bold [ 1 ] Scan $reset"
 	echo -e "$white$bold [ 2 ] Analyze Meticulously $reset"
 	echo -e "$white$bold [ 3 ] Save Device Info $reset "
-	echo -e "$white$bold [ 4 ] Exit  $reset\n"
+	echo -e "$white$bold [ 4 ] Expert Mode $reset "
+	echo -e "$white$bold [ 5 ] Exit  $reset\n"
 
 
 	printf "$white$bold ➜  ~  $reset"
@@ -82,6 +83,8 @@ menu(){
 	elif [ "$response" == 3 ];then
 		info
 	elif [ "$response" == 4 ];then
+		expert
+	elif [ "$response" == 5 ];then
 		echo -e "$red$white$bold EXIT "
 		exit
 	else
@@ -580,6 +583,16 @@ am(){
 	echo -e "$white$bold In this section, you can view the logs instantly"
 	sleep 3
 	adb logcat
+}
+
+
+
+expert(){
+
+
+	adb shell
+
+
 }
 
 
