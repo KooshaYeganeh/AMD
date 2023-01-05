@@ -48,15 +48,23 @@ $reset"""
 
 
 
-FILE_PATH="/home/$user/L4A"
+FILE_PATH="/home/$user/AMD"
 
 if [ -d "$FILE_PATH" ];then
 	true
 else
-	mkdir /home/$user/L4A
+	mkdir /home/$user/AMD
 fi
 
 
+
+APP_PATH="/home/$user/AMD/App"
+
+if [ -d "$APP_PATH" ];then
+	true
+else
+	mkdir /home/$user/AMD/App
+fi
 
 
 
@@ -74,10 +82,13 @@ menu(){
 	read response
 
 	if [ "$response" == 1 ];then
-
+		adb pull /sdcard/Android/data /home/$user/AMD/App
+		adb pull /system/app /home/$user/AMD/App
 	scan_start_time=`date "+%Y/%m/%d-%H:%M:%S"`
 		scan
 		scan2
+		python3 AMD_E2 # This is Python Engine
+		rm -rf $APP_PATH
 	elif [ "$response" == 2 ];then
 		am
 	elif [ "$response" == 3 ];then
@@ -545,11 +556,11 @@ info(){
 
 	info_time=`date "+%Y/%m/%d-%H:%M"`
 
-	info_path="/home/$user/L4A/Documents/$info_time"
+	info_path="/home/$user/AMD/Documents/$info_time"
 	if [ -d "$info_path" ];then
 		true
 	else
-		mkdir /home/$user/L4A/Documents/$info_time
+		mkdir /home/$user/AMD/Documents/$info_time
 	fi
 
 	activity=`adb shell dumpsys activity`
@@ -571,8 +582,8 @@ info(){
 	echo $display > $info_path/$serial-Display.txt
 	
 	
-	echo -e "$white$bold All Data Saved in /home/$user/L4A/Documents"
-	echo -e "$white$bold Number of Files Saved in /home/$user/L4A/Documents : 7 "
+	echo -e "$white$bold All Data Saved in /home/$user/AMD/Documents"
+	echo -e "$white$bold Number of Files Saved in /home/$user/AMD/Documents : 7 "
 }
 
 
