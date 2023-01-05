@@ -144,7 +144,7 @@ scan(){
 
 	
 	
-	echo -e "$white$bold ========== Engine1: Start Scan with Zak Doffman Info ========== $reset"
+	echo -e "$white$bold ========== Database 1 : Start Scan with Zak Doffman Information ========== $reset"
 	sleep 2
 
 	files=`adb shell pm list packages | cut -d ":" -f2`
@@ -389,7 +389,7 @@ scan2(){
 
 #  Bitdefender 
 
-	echo -e "$white$bold ========== Engine2: Start Scan with  Dr. Web Info ========== $reset \n"
+	echo -e "$white$bold ========== Database 2: Start Scan with  Dr. Web Information ========== $reset \n"
 	sleep 2
 	packages=`adb shell pm list packages | cut -d ":" -f2`
 
@@ -545,7 +545,7 @@ scan2(){
 scan_end_time=`date "+%Y/%m/%d-%H:%M:%S"`
 
 
-echo -e "\n\n$white$bold ========== Scan Info ========== "
+echo -e "\n\n$white$bold ========== First Engine Scan Info ========== "
 echo -e "$white$bold Scan Start Time : $scan_start_time"
 echo -e "$white$bold Scan Start Time : $scan_end_time"
 echo -e "$white$bold =============================== "
