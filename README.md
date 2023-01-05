@@ -1,4 +1,4 @@
-# Linux4Android
+# AMD ( Android Malware Detect )
 
 connect & Debug & Scan for Malicious Activity
 
