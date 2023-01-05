@@ -1,0 +1,14 @@
+certifi==2022.12.7
+charset-normalizer==2.0.12
+colorama==0.4.5
+idna==3.4
+importlib-metadata==4.8.3
+PIL-Tools==1.1.0
+Pillow==8.4.0
+prettytable==2.5.0
+PyMySQL==1.0.2
+requests==2.27.1
+typing_extensions==4.1.1
+urllib3==1.26.13
+wcwidth==0.2.5
+zipp==3.6.0
