@@ -6,22 +6,22 @@ connect,Debug & Scan Android Devices for Malicious Activity
 
 # Table of Contents
 
-- [Info](https://github.com/KooshaYeganeh/AMD#info)
+1 - [Info](https://github.com/KooshaYeganeh/AMD#info)
     - [Applicatio Info]()
     - [Manifesto]()
 
-- [Install](https://github.com/KooshaYeganeh/AMD#install)
+2 - [Install](https://github.com/KooshaYeganeh/AMD#install)
     - [Android Debug Bridge](https://github.com/KooshaYeganeh/AMD#install-android-debug-bridge)
     - [Tools]()
     - [Main App]()
 
-- [Run]()
+3 - [Run]()
 
-- [Remove]()
+4 - [Remove]()
     - [Main App]()
     - [Tools]()
 
-- [Donate]()
+5 - [Donate]()
     - [code]()
     - [database]()
     - [Mobiles]()
