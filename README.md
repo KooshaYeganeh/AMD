@@ -6,21 +6,38 @@ connect,Debug & Scan Android Devices for Malicious Activity
 
 # Table of Contents
 
+- [Info](https://github.com/KooshaYeganeh/AMD#info)
+    - [Applicatio Info]()
+    - [Manifesto]()
+
+- [Install](https://github.com/KooshaYeganeh/AMD#install)
+    - [Android Debug Bridge](https://github.com/KooshaYeganeh/AMD#install-android-debug-bridge)
+    - [Tools]()
+    - [Main App]()
+
+- [Run]()
+
+- [Remove]()
+    - [Main App]()
+    - [Tools]()
+
+- [Donate]()
+    - [code]()
+    - [database]()
+    - [Mobiles]()
+
+## INFO
+
+### App Info
+
+
+### Manifesto
 
 
 
-# INFO
+## Install
 
-## App Info
-
-
-## Manifesto
-
-
-
-# Install
-
-## install Android Debug Bridge
+### install Android Debug Bridge
 
 **Debian/Ubuntu**
 
@@ -52,18 +69,18 @@ sudo pacman -S android-tools
 adb version
 ```
 
-## Install Tools
+### Install Tools
 
 
 
-## install main app
+### install main app
 
 ```
 cd /tmp && wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip && unzip main.zip && cd AMD-main && sudo mv AMD /usr/bin && cd 
 ```
 
 
-# RUN
+## RUN
 
 
 ```
@@ -71,11 +88,25 @@ AMD
 ```
 
 
-# Remove
+## Remove
+
+
+### Remove Main app
 
 ```
 sudo rm /usr/bin/AMD
 ```
 
 
-# Donate
+### Remove Tools
+
+
+## Donate
+
+### Donate with code
+
+
+### Donate with Database
+
+
+### Donate with Test on More Mobiles
