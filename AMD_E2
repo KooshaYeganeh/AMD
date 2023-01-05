@@ -1,0 +1,186 @@
+#!/usr/bin/python3
+
+import os
+import sys
+import hashlib
+import glob
+import config
+import pymysql
+import getpass
+import re
+from prettytable import PrettyTable
+from time import sleep
+from colorama import init, Fore, Back, Style
+import shutil
+import datetime
+
+
+
+user = getpass.getuser()
+
+
+directory = f"/home/{user}/AMD/App"
+
+s_time = datetime.datetime.now()
+start_time = s_time.strftime("%A %d %B-%H:%M:%S")
+
+
+def apk():
+    sigfiles = glob.glob(f"{directory}/**/*.apk", recursive=True)
+    for file in sigfiles:
+        with open(file, 'rb') as f:
+            header = f.read(32)  # check header
+            main_header = str(header.hex())
+            if main_header[0:8] != "504b0304":
+                print(Fore.LIGHTRED_EX + f"{file} => Found Malware in Applications [ WARNING ]")
+                print(Fore.LIGHTRED_EX +
+                      "Do You Want to Quarantine This File ,type y for Delete File type n ")
+                response = input()
+                if response == "y" or response == "Y":
+                    shutil.move(file, "/tmp")
+                    print(f"File:{file} Moved to /tmp : [ OK ]")
+                elif response == "n" or response == "N":
+                    os.remove(file)
+                    print(f"File:{file} Removed From system : [ OK ]")
+                else:
+                    print("You Are Enter Nothing")
+            else:
+                print(Fore.LIGHTGREEN_EX + f"{file} is : [ OK ]")
+    return "All Application Signature Checking Done"
+
+
+
+def check_string():
+    applications = glob.glob(f"{directory}/**/*.apk" , recursive=True)
+    for application in applications:
+        danger = os.popen(f"strings {application}").read()
+        if re.search("encrypt" , danger) or re.search("ENCRYPT" , danger) or \
+           re.search("ip" , danger) or re.search("send" , danger) or \
+           re.search("zip" , danger) or re.search("password" , danger) or \
+           re.search("hack" , danger) or re.search("HACK" , danger) or \
+           re.search("HACKER" , danger) or re.search("hacked" , danger) or \
+           re.search("HACKED" , danger) or re.search("hacker" , danger):
+            print(f"{application} => Find Application with Abnormal Content [ WARNING ]")
+        else:
+            print("No Application Found with Abnormal Content [ OK ]")
+    return "Files Content checked "
+           
+
+
+def connection():
+    db = pymysql.connect(host=config.MYSQL_HOST,
+                     user=config.MYSQL_USER,
+                     passwd=config.MYSQL_PASSWORD,
+                     db=config.MYSQL_DB,
+                     port=config.MYSQL_PORT,
+                     charset='utf8',
+                     use_unicode=True)
+    return db
+
+def check_db():
+    db = pymysql.connect(host=config.MYSQL_HOST,
+                         user=config.MYSQL_USER,
+                         passwd=config.MYSQL_PASSWORD,
+                         db=config.MYSQL_DB,
+                         port=config.MYSQL_PORT,
+                         charset='utf8',
+                         use_unicode=True)
+    cur = db.cursor()
+    cur.execute("SHOW TABLES")
+    data = cur.fetchall()
+    db.close()
+    return data
+
+
+if re.search("Android_Malware_Table", str(check_db())):
+    pass
+else:
+    db = pymysql.connect(host=config.MYSQL_HOST,
+                         user=config.MYSQL_USER,
+                         passwd=config.MYSQL_PASSWORD,
+                         db=config.MYSQL_DB,
+                         port=config.MYSQL_PORT,
+                         charset='utf8',
+                         use_unicode=True)
+    cur = db.cursor()
+    cur.execute("CREATE TABLE Android_Malware_Table (sha256sum VARCHAR(500))")
+    db.commit()
+    db.close()
+
+
+def scan():
+    sha256_hash = hashlib.sha256()
+    files = glob.glob(f"/{directory}/**/*.apk" , recursive=True)
+    for file in files:
+        with open(file,"rb") as f:
+            for byte_block in iter(lambda: f.read(4096),b""):
+                sha256_hash.update(byte_block)
+            apphash = sha256_hash.hexdigest()
+            database = connection()
+            cur = database.cursor()
+            cur.execute(f"SELECT * FROM Android_Malware_Table WHERE sha256sum=%s" , apphash)
+            data1 = cur.fetchall()
+            if data1 == apphash:
+                print(Fore.LIGHTRED_EX + f"[ WARNING ] Find Malicious Andriod App : {file}")
+            else:
+                print(Fore.LIGHTGREEN_EX + f"File : {file} => [ OK ]")
+            cur.close()
+
+    num_files = len(files)
+    etime = datetime.datetime.now()
+    end_time = etime.strftime("%A %d %B-%H:%M:%S")
+    
+
+    x = PrettyTable()
+    x.field_names = ["Action", "Status"]
+    x.add_row(["Number of Scanned Apps ", f"{num_files}"])
+    x.add_row(["-----------------------", "--------------------"])
+    x.add_row(["Scan Start Time ", f"{start_time}"])
+    x.add_row(["-----------------------", "--------------------"])
+    x.add_row(["Scan End Time ", f"{end_time}"])
+    x.add_row(["-----------------------", "--------------------"])
+
+    x.add_row(["Scan Status", "Successfull"])
+
+    return x
+
+
+
+
+def insert():
+    hashdata = input("Enter sha256sum of Application : ")
+    con = connection()
+    cur = con.cursor()
+    cur.execute("INSERT INTO Android_Malware_Table (sha256sum)" "VALUES('%s')" % (''.join(hashdata)))
+    con.commit()  # db.close()
+    con.close()
+    return "Sha256sum File Inserted Successfully"
+
+
+
+
+if __name__ == "__main__":
+    print(apk())
+    print(check_string())
+    print(scan())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
