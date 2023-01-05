@@ -132,7 +132,7 @@ def scan():
     
 
     x = PrettyTable()
-    x.field_names = ["Action", "Status"]
+    x.field_names = ["Action", "Engine 2 Status"]
     x.add_row(["Number of Scanned Apps ", f"{num_files}"])
     x.add_row(["-----------------------", "--------------------"])
     x.add_row(["Scan Start Time ", f"{start_time}"])
