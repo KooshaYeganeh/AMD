@@ -1,0 +1,107 @@
+#!/bin/bash
+
+user=$USER
+
+
+MAIN_PATH="/home/$user/AMD"
+if [ -d "$MAIN_PATH" ];then
+	true
+else
+	mkdir /home/$user/AMD
+fi
+
+
+
+
+
+ubuntu=`cat /etc/os-release | grep -o "ubuntu" | head -1`
+redhat=`cat /etc/os-release | grep -o "redhat" | head -1`
+suse=`cat /etc/os-release | grep -o "suse" | head -1`
+
+
+
+Ubuntu(){
+
+
+	# Android Debug Bridge
+	
+	sudo apt update && sudo apt upgrade -y
+	sudo apt install adb -y
+
+	echo  "(1/ ) .............. MariaDB installed [ OK ]"
+	# MariaDB
+	
+	sudo apt update
+	sudo apt install mariadb-server -y
+	sudo systemctl start mariadb.service
+	sudo mysql_secure_installation
+
+	echo "Press Enter for indicate none for current database root password and next Step type "N" and press Enter to not set password to root user."
+	echo "in Other Steps press Enter to Done"
+
+	echo "Enter Database user :"
+	read database_user
+	echo "Enter Database Password :"
+	read database_password : 
+	sudo mariadb --execute="GRANT ALL ON *.* TO '$database_user'@'localhost' IDENTIFIED BY '$database_password' WITH GRANT OPTION;FLUSH PRIVILEGES;exit;"
+	echo  "(2/ ) .............. MariaDB installed [ OK ]"
+	
+	# python_Tools
+	
+	sudo apt install python3-pip -y
+
+	sudo pip3 install virtualenv
+
+	echo  "(3/ ) .............. python Tools installed [ OK ]"
+	
+	
+	cd /home/$user/AMD
+	wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip
+	unzip main.zip
+	mv AMD-main Source 
+	vurtualenv venv
+	source venv/bin/activate
+	pip3 install -r requirements.txt
+
+
+}
+
+
+
+if [ "$ubuntu" == "ubuntu" ];then
+	Ubuntu
+elif [ "$fedora" == "fedora" ];then
+	Fedora
+elif [ "$suse" == "suse" ];then
+	OpenSuse
+else
+	echo "Can Not Detect OS or Your Distrubutions Not Supported Now"
+fi
+
+
+APP_SOURCE="/home/$user/AMD/Source"
+if [ -d "$APP_SOURCE" ];then
+	true
+else
+	mkdir /home/$user/AMD/Source
+	echo  "(1/ ) .............. Source Directory Created"
+
+	cd /home/$user/AMD/Source
+	wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip
+	unzip main.zip
+	cd AMD-main
+	virtualenv venv
+	source venv/bin/activate
+	pip3 install -r requirements.txt
+	sudo mv AMD /usr/bin
+	echo """
+	[clinet]
+	user=mysql_user
+	password=mysql_password
+	"""
+	mysql -u root -p --execute="CREATE DATABASE Android_Malware;"
+	mysql -u root -p Android_Malware < ./Android_Malware.sql
+
+fi
+
+

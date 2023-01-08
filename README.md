@@ -3,9 +3,6 @@
 connect,Debug & Scan Android Devices for Malicious Activity
 
 
-![AMD](https://www.freepnglogos.com/uploads/android-logo-png/android-logo-0.png)
-![linux](https://logos-world.net/wp-content/uploads/2020/09/Linux-Logo-700x394.png)
-
 
 ## Table of Contents
 
