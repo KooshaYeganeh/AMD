@@ -12,7 +12,7 @@ connect,Debug & Scan Android Devices for Malicious Activity
 -----------------------------------------------------------------------------------------------
 - [**Install**](https://github.com/KooshaYeganeh/AMD#install)
     - [**Manual (Recomended)**]()
-        - [Fedora]()
+        - [Fedora](https://github.com/KooshaYeganeh/AMD#fedora)
             - [Android Debug Bridge](https://github.com/KooshaYeganeh/AMD#android-debug-bridge)
             - [MariaDB](https://github.com/KooshaYeganeh/AMD#mariadb)
             - [Python-pip](https://github.com/KooshaYeganeh/AMD#python-pip)
@@ -23,24 +23,21 @@ connect,Debug & Scan Android Devices for Malicious Activity
             - [Python-pip](https://github.com/KooshaYeganeh/AMD#python-tools)
             - [Main App](https://github.com/KooshaYeganeh/AMD#main-app-1)
         - [OpenSuse](https://github.com/KooshaYeganeh/AMD#opensuse)
-            - [Android Debug Bridge]()
-            - [Mariadb]()
-            - [Python-pip]()
-            - [Main App]()
+            - [Android Debug Bridge](https://github.com/KooshaYeganeh/AMD#android-debug-bridge-2)
+            - [Mariadb](https://github.com/KooshaYeganeh/AMD#mariadb-2)
+            - [Python-pip](https://github.com/KooshaYeganeh/AMD#python-tools-1)
+            - [Main App](https://github.com/KooshaYeganeh/AMD#main-app-2)
     - [**Automatic**]()
 -----------------------------------------------------------------------------------------------
-- [**Run**]()
+- [**Run**](https://github.com/KooshaYeganeh/AMD#run)
 
 -----------------------------------------------------------------------------------------------
-- [**Remove**]()
-    - [Main App]()
-    - [Tools]()
-
+- [**Remove**](https://github.com/KooshaYeganeh/AMD#remove)
 -----------------------------------------------------------------------------------------------
-- [**Donate**]()
-    - [code]()
-    - [database]()
-    - [Mobiles]()
+- [**Donate**](https://github.com/KooshaYeganeh/AMD#donate)
+    - [code](https://github.com/KooshaYeganeh/AMD#donate-with-code)
+    - [database](https://github.com/KooshaYeganeh/AMD#donate-with-database)
+    - [Mobiles](https://github.com/KooshaYeganeh/AMD#donate-with-test-on-more-mobilephones)
 
 ## INFO
 
@@ -448,6 +445,17 @@ mysql --execute="CREATE DATABASE Android_Malware;"
 mysql Android_Malware < ./Android_Malware.sql
 ```
 
+
+
+### Automatic Install
+
+```
+wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip && unzip main.zip && cd AMD-main
+```
+
+```
+./install
+```
 
 
 
