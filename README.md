@@ -225,6 +225,21 @@ FLUSH PRIVILEGES;
 exit
 ```
 
+```
+vi /etc/mysql/mariadb.conf.d/50-server.cnf
+```
+
+*add these lines to the config File:*
+
+
+```
+[client]
+user=mysql_user
+password=mysql_pass
+```
+
+
+
 #### Python-tools
 
 ```
@@ -294,9 +309,51 @@ sudo pip3 install virtualenv
 
 #### Main App
 
+Create Directory in home of user
+
+> To find out who the system user is, use the command :
+
 ```
-cd /tmp && wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip && unzip main.zip && cd AMD-main && sudo mv AMD /usr/bin && cd 
+user=$USER && echo $user
 ```
+
+```
+mkdir /home/$user/AMD
+```
+```
+mkdir /home/$user/AMD/Source
+```
+```
+cd /tmp
+```
+```
+wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip
+```
+```
+unzip main.zip 
+```
+```
+cp -r AMD-main/* /home/$user/AMD/Source
+```
+```
+cd /home/$user/AMD/Source
+```
+
+```
+pip install -r requirements.txt
+```
+
+```
+source venv/bin/activate
+```
+
+```
+sudo mv AMD /usr/bin
+```
+```
+cd 
+```
+
 
 
 
