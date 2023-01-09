@@ -5,4 +5,6 @@ user=$USER
 
 cd /home/$user/AMD/Source
 
-./AMD
+source venv/bin/activate
+
+./AMD_E1
