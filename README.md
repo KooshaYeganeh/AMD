@@ -11,21 +11,23 @@ connect,Debug & Scan Android Devices for Malicious Activity
     - [Manifesto]()
 -----------------------------------------------------------------------------------------------
 - [**Install**](https://github.com/KooshaYeganeh/AMD#install)
-    - [Fedora]()
-        - [Android Debug Bridge]()
-        - [Mariadb]()
-        - [Python-pip]()
-        - [Main App]()
-    - [Ubuntu]()
-        - [Android Debug Bridge]()
-        - [Mariadb]()
-        - [Python-pip]()
-        - [Main App]()
-    - [OpenSuse]()
-        - [Android Debug Bridge]()
-        - [Mariadb]()
-        - [Python-pip]()
-        - [Main App]()
+    - [**Manual(Recomended)**]()
+        - [Fedora]()
+            - [Android Debug Bridge](https://github.com/KooshaYeganeh/AMD#android-debug-bridge)
+            - [MariaDB](https://github.com/KooshaYeganeh/AMD#mariadb)
+            - [Python-pip](https://github.com/KooshaYeganeh/AMD#python-pip)
+            - [Main App](https://github.com/KooshaYeganeh/AMD#main-app)
+        - [Ubuntu](https://github.com/KooshaYeganeh/AMD#ubuntu)
+            - [Android Debug Bridge]()
+            - [Mariadb](https://github.com/KooshaYeganeh/AMD#mariadb-1)
+            - [Python-pip](https://github.com/KooshaYeganeh/AMD#python-tools)
+            - [Main App]()
+        - [OpenSuse]()
+            - [Android Debug Bridge]()
+            - [Mariadb]()
+            - [Python-pip]()
+            - [Main App]()
+    - [**Automatic**]()
 -----------------------------------------------------------------------------------------------
 - [**Run**]()
 
@@ -49,6 +51,7 @@ The purpose of developing this software:
 2- Development of Linux open source software domain
 3- Scanning the Android device without the need for software to be installed on the mobile phone
 4- Helping specialists to improve the security of Android devices
+5- Following the main philosophy: We produce everything we need ourselves and are not dependent on companies
 
 ### Manifesto
 
@@ -141,8 +144,8 @@ sudo vi /etc/my.cnf
 
 ```
 [client]
-user=mysql_user
-password=mysql_pass
+user=mysql_user     # MariaDB User
+password=mysql_pass # MariaDB Password
 ```
 
 
@@ -168,7 +171,7 @@ mkdir /home/$USER/AMD && cd /home/$USER/AMD
 wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip && unzip main.zip && mv AMD-main Source && cd Source && mv config.py.sample config.py && rm main.zip
 ```
 
-Note : chaneg config File Values Like Host and name and pass of mariaDB with Your attributes
+Note : Change config File Values Like Host and name and pass of mariaDB with Your attributes
 
 ```
 virtualenv venv && source vemv/bin/activate
@@ -200,6 +203,12 @@ mysql Android_Malware < ./Android_Malware.sql
 
 ### Ubuntu
 
+#### Android Debug Bridge
+
+```
+sudo apt update && sudo apt install adb -y
+```
+
 
 #### MariaDB
 
@@ -208,7 +217,7 @@ sudo apt update
 ```
 
 ```
-sudo apt install mariadb-server
+sudo apt install mariadb-server -y
 ```
 
 ```
@@ -277,8 +286,8 @@ vi /etc/mysql/mariadb.conf.d/50-server.cnf
 
 ```
 [client]
-user=mysql_user
-password=mysql_pass
+user=mysql_user     # MariaDB user
+password=mysql_pass # MariaDB password
 ```
 
 
@@ -293,6 +302,45 @@ sudo apt install python3-pip
 sudo pip3 install virtualenv
 ```
 
+#### Main App
+
+```
+mkdir /home/$USER/AMD && cd /home/$USER/AMD
+```
+
+```
+wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip && unzip main.zip && mv AMD-main Source && cd Source && mv config.py.sample config.py && rm main.zip
+```
+
+Note : Change config File Values Like Host and name and pass of mariaDB with Your attributes
+
+```
+virtualenv venv && source vemv/bin/activate
+```
+
+```
+pip install -r requirements.txt
+```
+
+```
+sudo mv AMD /usr/bin
+```
+
+**Create Linux Standard config File**
+
+```
+sudo mkdir /etc/AMD && cd /etc/AMD && sudo ln -s /home/$USER/AMD/Source/config.py AMD.conf
+```
+
+**Restore Database**
+
+```
+mysql --execute="CREATE DATABASE Android_Malware;"
+```
+
+```
+mysql Android_Malware < ./Android_Malware.sql
+```
 
 
 ### OpenSuse
@@ -333,8 +381,8 @@ sudo vi /etc/my.cnf
 
 ```
 [client]
-user=mysql_user
-password=mysql_pass
+user=mysql_user     # MariaDB user
+password=mysql_pass #MariaDB Password
 ```
 
 #### Python-Tools
@@ -348,38 +396,20 @@ sudo pip3 install virtualenv
 ```
 
 
-
-
 #### Main App
 
-Create Directory in home of user
-
-> To find out who the system user is, use the command :
-
 ```
-user=$USER && echo $user
+mkdir /home/$USER/AMD && cd /home/$USER/AMD
 ```
 
 ```
-mkdir /home/$user/AMD
+wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip && unzip main.zip && mv AMD-main Source && cd Source && mv config.py.sample config.py && rm main.zip
 ```
+
+Note : Change config File Values Like Host and name and pass of mariaDB with Your attributes
+
 ```
-mkdir /home/$user/AMD/Source
-```
-```
-cd /tmp
-```
-```
-wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip
-```
-```
-unzip main.zip 
-```
-```
-cp -r AMD-main/* /home/$user/AMD/Source
-```
-```
-cd /home/$user/AMD/Source
+virtualenv venv && source vemv/bin/activate
 ```
 
 ```
@@ -387,39 +417,23 @@ pip install -r requirements.txt
 ```
 
 ```
-source venv/bin/activate
-```
-
-```
-mv config.py.sample config.py
-```
-
-**Note : Edit config File with Your configurations Like such as changing the name, port, host, and MySQL password**
-
-
-**Create Standard Directory For config File of LMD**
-
-```
-sudo mkdir /etc/AMD
-```
-```
-cd /etc/AMD
-```
-```
-sudo touch AMD.conf
-```
-
-```
-sudo ln -s AMD.conf /home/$user/AMD/Source/config.py
-```
-
-**Move Call File From Standard Directory**
-
-```
 sudo mv AMD /usr/bin
 ```
+
+**Create Linux Standard config File**
+
 ```
-cd 
+sudo mkdir /etc/AMD && cd /etc/AMD && sudo ln -s /home/$USER/AMD/Source/config.py AMD.conf
+```
+
+**Restore Database**
+
+```
+mysql --execute="CREATE DATABASE Android_Malware;"
+```
+
+```
+mysql Android_Malware < ./Android_Malware.sql
 ```
 
 
@@ -435,8 +449,6 @@ AMD
 
 ## Remove
 
-
-### Remove Main app
 
 ```
 sudo rm /usr/bin/AMD && sudo rm -rf /home/$user/AMD && sudo rm -rf /etc/AMD 
