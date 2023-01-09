@@ -11,7 +11,7 @@ connect,Debug & Scan Android Devices for Malicious Activity
     - [Manifesto]()
 -----------------------------------------------------------------------------------------------
 - [**Install**](https://github.com/KooshaYeganeh/AMD#install)
-    - [**Manual(Recomended)**]()
+    - [**Manual (Recomended)**]()
         - [Fedora]()
             - [Android Debug Bridge](https://github.com/KooshaYeganeh/AMD#android-debug-bridge)
             - [MariaDB](https://github.com/KooshaYeganeh/AMD#mariadb)
@@ -21,8 +21,8 @@ connect,Debug & Scan Android Devices for Malicious Activity
             - [Android Debug Bridge]()
             - [Mariadb](https://github.com/KooshaYeganeh/AMD#mariadb-1)
             - [Python-pip](https://github.com/KooshaYeganeh/AMD#python-tools)
-            - [Main App]()
-        - [OpenSuse]()
+            - [Main App](https://github.com/KooshaYeganeh/AMD#main-app-1)
+        - [OpenSuse](https://github.com/KooshaYeganeh/AMD#opensuse)
             - [Android Debug Bridge]()
             - [Mariadb]()
             - [Python-pip]()
@@ -344,6 +344,18 @@ mysql Android_Malware < ./Android_Malware.sql
 
 
 ### OpenSuse
+
+#### Android Debug Bridge
+
+```
+sudo zypper addrepo https://download.opensuse.org/repositories/hardware/openSUSE_Leap_15.3/hardware.repo
+```
+```
+sudo zypper refresh
+```
+```
+sudo zypper install android-tools
+```
 
 
 #### MariaDB
