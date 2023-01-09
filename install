@@ -85,13 +85,13 @@ Ubuntu(){
 
 	check_mariadb=`sudo systemctl status mariadb | grep -w "Active: active"`
 	if [ "$check_mariadb" == "Active: active" ];then
-		mysql -u root -p --execute="CREATE DATABASE Android_Malware;"
-		mysql -u root -p Android_Malware < ./Android_Malware.sql
+		mysql --execute="CREATE DATABASE Android_Malware;"
+		mysql Android_Malware < ./Android_Malware.sql
 		echo  "(4/4) .............. AMD installed [ OK ]"
 	else
 		sudo systemctl start mariadb
-		mysql -u root -p --execute="CREATE DATABASE Android_Malware;"
-		mysql -u root -p Android_Malware < ./Android_Malware.sql
+		mysql --execute="CREATE DATABASE Android_Malware;"
+		mysql Android_Malware < ./Android_Malware.sql
 		echo  "(4/4) .............. AMD installed [ OK ]"
 	fi
 
@@ -175,13 +175,13 @@ Fedora(){
 
 	check_mariadb=`sudo systemctl status mariadb | grep -w "Active: active"`
 	if [ "$check_mariadb" == "Active: active" ];then
-		mysql -u root -p --execute="CREATE DATABASE Android_Malware;"
-		mysql -u root -p Android_Malware < ./Android_Malware.sql
+		mysql --execute="CREATE DATABASE Android_Malware;"
+		mysql Android_Malware < ./Android_Malware.sql
 		echo  "(4/4) .............. AMD installed [ OK ]"
 	else
 		sudo systemctl start mariadb
-		mysql -u root -p --execute="CREATE DATABASE Android_Malware;"
-		mysql -u root -p Android_Malware < ./Android_Malware.sql
+		mysql --execute="CREATE DATABASE Android_Malware;"
+		mysql Android_Malware < ./Android_Malware.sql
 		echo  "(4/4) .............. AMD installed [ OK ]"
 	fi
 
@@ -263,13 +263,13 @@ OpenSuse(){
 
 	check_mariadb=`sudo systemctl status mariadb | grep -w "Active: active"`
 	if [ "$check_mariadb" == "Active: active" ];then
-		mysql -u root -p --execute="CREATE DATABASE Android_Malware;"
-		mysql -u root -p Android_Malware < ./Android_Malware.sql
+		mysql --execute="CREATE DATABASE Android_Malware;"
+		mysql Android_Malware < ./Android_Malware.sql
 		echo  "(4/4) .............. AMD installed [ OK ]"
 	else
 		sudo systemctl start mariadb
-		mysql -u root -p --execute="CREATE DATABASE Android_Malware;"
-		mysql -u root -p Android_Malware < ./Android_Malware.sql
+		mysql --execute="CREATE DATABASE Android_Malware;"
+		mysql Android_Malware < ./Android_Malware.sql
 		echo  "(4/4) .............. AMD installed [ OK ]"
 	fi
 
