@@ -154,6 +154,49 @@ password=mysql_pass
 sudo dnf install python-pip
 ```
 
+```
+sudo pip install virtualenv
+```
+
+#### Main App
+
+```
+mkdir /home/$USER/AMD && cd /home/$USER/AMD
+```
+
+```
+wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip && unzip main.zip && mv AMD-main Source && cd Source && mv config.py.sample config.py && rm main.zip
+```
+
+Note : chaneg config File Values Like Host and name and pass of mariaDB with Your attributes
+
+```
+virtualenv venv && source vemv/bin/activate
+```
+
+```
+pip install -r requirements.txt
+```
+
+```
+sudo mv AMD /usr/bin
+```
+
+**Create Linux Standard config File**
+
+```
+sudo mkdir /etc/AMD && cd /etc/AMD && sudo ln -s /home/$USER/AMD/Source/config.py AMD.conf
+```
+
+**Restore Database**
+
+```
+mysql --execute="CREATE DATABASE Android_Malware;"
+```
+
+```
+mysql Android_Malware < ./Android_Malware.sql
+```
 
 ### Ubuntu
 
@@ -281,12 +324,12 @@ sudo zypper -n install MariaDB-server MariaDB-client
 ** To add the user and password in MariaDB's config file (so that you don't have to enter the user and password every time in your system) you must do This :**
 
 
+*edit my.cnf File and add these lines to the config File:*
+
+
 ```
 sudo vi /etc/my.cnf
 ```
-
-*add these lines to the config File:*
-
 
 ```
 [client]
@@ -348,6 +391,31 @@ source venv/bin/activate
 ```
 
 ```
+mv config.py.sample config.py
+```
+
+**Note : Edit config File with Your configurations Like such as changing the name, port, host, and MySQL password**
+
+
+**Create Standard Directory For config File of LMD**
+
+```
+sudo mkdir /etc/AMD
+```
+```
+cd /etc/AMD
+```
+```
+sudo touch AMD.conf
+```
+
+```
+sudo ln -s AMD.conf /home/$user/AMD/Source/config.py
+```
+
+**Move Call File From Standard Directory**
+
+```
 sudo mv AMD /usr/bin
 ```
 ```
@@ -371,19 +439,27 @@ AMD
 ### Remove Main app
 
 ```
-sudo rm /usr/bin/AMD
+sudo rm /usr/bin/AMD && sudo rm -rf /home/$user/AMD && sudo rm -rf /etc/AMD 
 ```
 
+```
+mysql --execute="DROP DATABASE Android_Malware;"
+```
 
-### Remove Tools
 
 
 ## Donate
 
 ### Donate with code
 
+You can contribute to this project by changing or adding source engines or writing a new engine.
 
 ### Donate with Database
 
+You can help increase the database by introducing malicious files or malicious software (along with their download links).
 
-### Donate with Test on More Mobiles
+### Donate with Test on More MobilePhones
+
+You can cooperate in this project by testing the software on different phones and reporting the problems that occurred in the tested phone. You can send the report of the problems that occurred during testing to the following address:
+
+1- kooshakooshadv@gmail.com
