@@ -7,8 +7,8 @@ connect,Debug & Scan Android Devices for Malicious Activity
 ## Table of Contents
 
 - [**Info**](https://github.com/KooshaYeganeh/AMD#info)
-    - [Applicatio Info]()
-    - [Manifesto]()
+    - [Applicatio Info](https://github.com/KooshaYeganeh/AMD#info)
+    - [Manifesto](https://github.com/KooshaYeganeh/AMD#manifesto)
 -----------------------------------------------------------------------------------------------
 - [**Install**](https://github.com/KooshaYeganeh/AMD#install)
     - [**Manual (Recomended)**]()
@@ -27,7 +27,7 @@ connect,Debug & Scan Android Devices for Malicious Activity
             - [Mariadb](https://github.com/KooshaYeganeh/AMD#mariadb-2)
             - [Python-pip](https://github.com/KooshaYeganeh/AMD#python-tools-1)
             - [Main App](https://github.com/KooshaYeganeh/AMD#main-app-2)
-    - [**Automatic**]()
+    - [**Automatic**](https://github.com/KooshaYeganeh/AMD#automatic-install)
 -----------------------------------------------------------------------------------------------
 - [**Run**](https://github.com/KooshaYeganeh/AMD#run)
 
@@ -43,20 +43,17 @@ connect,Debug & Scan Android Devices for Malicious Activity
 
 ### App Info
 
-The purpose of developing this software:
-1- Showing the power and efficiency of Linux
-2- Development of Linux open source software domain
-3- Scanning the Android device without the need for software to be installed on the mobile phone
-4- Helping specialists to improve the security of Android devices
+**The Purpose of Developing This Software :**  
+
+1- Showing the power and Efficiency of Linux  
+2- Development of Linux open source software domain  
+3- Scanning the Android device without the need for software to be installed on the mobile phone  
+4- Helping specialists to improve the security of Android devices  
 5- Following the main philosophy: We produce everything we need ourselves and are not dependent on companies
 
 ### Manifesto
 
-One of the goals to develop this software as much as possible is to prevent scams and profiteering from ordinary people by people who promise to secure the security of the Android device by charging an exorbitant fee and install antivirus.
-This is a hack against all those who, under the pretext of services, are profiting from ordinary people who pay exorbitant fees due to lack of knowledge and do not get results.
-Surely there will be other people who will accompany me in this way.
-
-This is a free and open source software. Its use is free and its development is allowed based on the license, but it is not acceptable to charge for the services provided by this software.
+This software is designed to test and scan Android software and its use is free for everyone. Because the basis of free software is friendship and cooperation.
 
 ## Install
 
@@ -129,7 +126,7 @@ FLUSH PRIVILEGES;
 exit
 ```
 
-** To add the user and password in MariaDB's config file (so that you don't have to enter the user and password every time in your system) you must do This :**
+**To add the user and password in MariaDB's config file (so that you don't have to enter the user and password every time in your system) you must do This :**
 
 
 ```
