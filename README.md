@@ -492,3 +492,11 @@ You can help increase the database by introducing malicious files or malicious s
 You can cooperate in this project by testing the software on different phones and reporting the problems that occurred in the tested phone. You can send the report of the problems that occurred during testing to the following address:
 
 1- kooshakooshadv@gmail.com
+
+Donate with Doge : 0x884D09a7f923Ab19d49c7d9440818a42Dfab2d6F
+
+## Source
+
+
+https://koodous.com/apks?is_detected=true  
+https://github.com/ashishb/android-malware
