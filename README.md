@@ -38,7 +38,7 @@ connect,Debug & Scan Android Devices for Malicious Activity
     - [code](https://github.com/KooshaYeganeh/AMD#donate-with-code)
     - [database](https://github.com/KooshaYeganeh/AMD#donate-with-database)
     - [Mobiles](https://github.com/KooshaYeganeh/AMD#donate-with-test-on-more-mobilephones)
-    - [DogeCoin]()
+    - [DogeCoin](https://github.com/KooshaYeganeh/AMD#donate-with-dogecoin)
 
 ## INFO
 
