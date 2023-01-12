@@ -27,6 +27,11 @@ connect,Debug & Scan Android Devices for Malicious Activity
             - [Mariadb](https://github.com/KooshaYeganeh/AMD#mariadb-2)
             - [Python-pip](https://github.com/KooshaYeganeh/AMD#python-tools-1)
             - [Main App](https://github.com/KooshaYeganeh/AMD#main-app-2)
+       - [RockyLinux](https://github.com/KooshaYeganeh/AMD#rocky-linux)
+            - [Android Debug Bridge](https://github.com/KooshaYeganeh/AMD#android-debug-bridge-3)
+            - [Mariadb](https://github.com/KooshaYeganeh/AMD#mariadb-3)
+            - [Python-pip](https://github.com/KooshaYeganeh/AMD#python-tools-2)
+            - [Main App](https://github.com/KooshaYeganeh/AMD#main-app-3)
     - [**Automatic**](https://github.com/KooshaYeganeh/AMD#automatic-install)
 -----------------------------------------------------------------------------------------------
 - [**Run**](https://github.com/KooshaYeganeh/AMD#run)
