@@ -395,7 +395,7 @@ password=mysql_pass #MariaDB Password
 #### Python-Tools
 
 ```
-sudo aypper -n install python3-pip
+sudo zypper -n install python3-pip
 ```
 
 ```
