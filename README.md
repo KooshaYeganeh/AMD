@@ -445,6 +445,149 @@ mysql Android_Malware < ./Android_Malware.sql
 
 
 
+
+### Rocky Linux
+
+
+#### Android Debug Bridge
+
+```
+sudo dnf update && sudo dnf install adb -y
+```
+
+
+#### MariaDB
+
+
+```
+sudo dnf install mariadb-server
+```
+
+```
+sudo systemctl start mariadb.service
+```
+
+```
+sudo mysql_secure_installation
+```
+
+*This will take you through a series of prompts where you can make some changes to your MariaDB installation’s security options. The first prompt will ask you to enter the current database root password. Since you have not set one up yet, press ENTER to indicate “none”.*
+
+```
+Output
+NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
+      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
+
+In order to log into MariaDB to secure it, we'll need the current
+password for the root user.  If you've just installed MariaDB, and
+you haven't set the root password yet, the password will be blank,
+so you should just press enter here.
+
+Enter current password for root (enter for none): 
+```
+
+
+*The next prompt asks you whether you’d like to set up a database root password. On Ubuntu, the root account for MariaDB is tied closely to automated system maintenance, so we should not change the configured authentication methods for that account. Doing so would make it possible for a package update to break the database system by removing access to the administrative account. Type N and then press ENTER.*
+
+```
+Output
+. . .
+OK, successfully used password, moving on...
+
+Setting the root password ensures that nobody can log into the MariaDB
+root user without the proper authorisation.
+
+Set root password? [Y/n] N
+```
+
+
+
+```
+sudo mariadb
+```
+*Then create a new user with root privileges and password-based access. Be sure to change the username and password to match your preferences:*
+
+```
+GRANT ALL ON *.* TO 'admin'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;
+```
+*Flush the privileges to ensure that they are saved and available in the current session:*
+
+```
+FLUSH PRIVILEGES;
+```
+
+```
+exit
+```
+
+```
+vi /etc/my.cnf
+```
+
+*add these lines to the config File:*
+
+
+```
+[client]
+user=mysql_user     # MariaDB user
+password=mysql_pass # MariaDB password
+```
+
+
+
+#### Python-tools
+
+```
+sudo dnf install python3-pip
+```
+
+```
+sudo pip3 install virtualenv
+```
+
+#### Main App
+
+```
+mkdir /home/$USER/AMD && cd /home/$USER/AMD
+```
+
+```
+wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip && unzip main.zip && mv AMD-main Source && cd Source && mv config.py.sample config.py && rm main.zip
+```
+
+Note : Change config File Values Like Host and name and pass of mariaDB with Your attributes
+
+```
+virtualenv venv && source vemv/bin/activate
+```
+
+```
+pip3 install -r requirements.txt
+```
+
+```
+sudo mv AMD /usr/bin
+```
+
+**Create Linux Standard config File**
+
+```
+sudo mkdir /etc/AMD && cd /etc/AMD && sudo ln -s /home/$USER/AMD/Source/config.py AMD.conf
+```
+
+**Restore Database**
+
+```
+mysql --execute="CREATE DATABASE Android_Malware;"
+```
+
+```
+mysql Android_Malware < ./Android_Malware.sql
+```
+
+
+
+
 ### Automatic Install
 
 ```
