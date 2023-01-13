@@ -38,7 +38,7 @@ connect,Debug & Scan Android Devices for Malicious Activity
 
 -----------------------------------------------------------------------------------------------
 - [**Remove**](https://github.com/KooshaYeganeh/AMD#remove)
-	- [**Autoremove**]()
+	- [**Autoremove**](https://github.com/KooshaYeganeh/AMD#autoremove)
 -----------------------------------------------------------------------------------------------
 - [**Donate**](https://github.com/KooshaYeganeh/AMD#donate)
     - [code](https://github.com/KooshaYeganeh/AMD#donate-with-code)
