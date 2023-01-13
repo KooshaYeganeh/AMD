@@ -38,6 +38,7 @@ connect,Debug & Scan Android Devices for Malicious Activity
 
 -----------------------------------------------------------------------------------------------
 - [**Remove**](https://github.com/KooshaYeganeh/AMD#remove)
+	- [**Autoremove**]()
 -----------------------------------------------------------------------------------------------
 - [**Donate**](https://github.com/KooshaYeganeh/AMD#donate)
     - [code](https://github.com/KooshaYeganeh/AMD#donate-with-code)
@@ -624,7 +625,11 @@ sudo rm /usr/bin/AMD && sudo rm -rf /home/$user/AMD && sudo rm -rf /etc/AMD
 mysql --execute="DROP DATABASE Android_Malware;"
 ```
 
+### Autoremove
 
+```
+./remove
+```
 
 ## Donate
 
