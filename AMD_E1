@@ -75,7 +75,8 @@ menu(){
 	echo -e "$white$bold [ 2 ] Analyze Meticulously $reset"
 	echo -e "$white$bold [ 3 ] Save Device Info $reset "
 	echo -e "$white$bold [ 4 ] Expert Mode $reset "
-	echo -e "$white$bold [ 5 ] Exit  $reset\n"
+	echo -e "$white$bold [ 5 ] Full Network Scan $reset "
+	echo -e "$white$bold [ 6 ] Exit  $reset\n"
 
 
 	printf "$white$bold ➜  ~  $reset"
@@ -96,6 +97,9 @@ menu(){
 	elif [ "$response" == 4 ];then
 		expert
 	elif [ "$response" == 5 ];then
+		check_network_security
+		
+	elif [ "$response" == 6 ];then
 		echo -e "$red$white$bold EXIT "
 		exit
 	else
@@ -587,6 +591,114 @@ info(){
 }
 
 
+check_network_security(){
+	echo "List Connected Networks"
+
+	adb shell dumpsys netstats
+
+
+	sleep 1
+
+	echo "start to capture system Logs"
+
+	adb logcat > /tmp/logcat.txt
+
+
+	echo "Start Check Device Hardware Information: "
+
+	adb shell cat /proc/cpuinfo
+	adb shell cat /proc/meminfo
+	
+	echo "Check SELinux Status: "
+	adb shell getenforce
+
+
+	sleep 1
+
+
+	echo "check OpenPorts"
+
+	telnet=`adb shell netstat | grep -w "23"`
+	msrpc=`adb shell netstat | grep -w "135"`
+	netbios1=`adb shell netstat | grep -w "137"`
+	netbios2=`adb shell netstat | grep -w "138"`
+	netbios3=`adb shell netstat | grep -w "139"`
+	microsoft_ds=`adb shell netstat | grep -w "445"`
+	irc1=`adb shell netstat | grep -w "666"`
+	irc2=`adb shell netstat | grep -w "667"`
+	irc3=`adb shell netstat | grep -w "668"`
+	irc4=`adb shell netstat | grep -w "669"`
+	snmp=`adb shell netstat | grep -w "161"`
+	dhcp1=`adb shell netstat | grep -w "67"`
+	dhcp2=`adb shell netstat | grep -w "68"`
+	ssh=`adb shell netstat | grep -w "22"`
+	ISAKMP=`adb shell netstat | grep -w "500"`
+	proxy=`adb shell netstat | grep -w "8080"`
+	backdoor1=`adb shell netstat | grep -w "42474"`
+
+
+	if [ "$telnet" == "23" ];then
+		echo "Telnet Ports is [OPEN]"
+		echo "Telnet is an unencrypted protocol that can expose login credentials if used over untrusted networks."
+
+
+	elif [ "$msrpc" == "135" ];then
+		echo "msrpc-Microsoft Remote Procedure Call port os [OPEN]"
+		echo "Historically associated with vulnerabilities and exploited by worms like Conficker."
+
+	elif [ "$netbios1" == "137" ];then
+		echo "netbios port is [OPEN]"
+		echo "Could be targeted by malware for spreading and reconnaissance."
+	elif [ "$netbios2" == "138" ];then
+		echo "netbios port is [OPEN]"
+		echo "Could be targeted by malware for spreading and reconnaissance."
+	elif [ "$netbios3" == "139" ];then
+		echo "netbios port is [OPEN]"
+		echo "Could be targeted by malware for spreading and reconnaissance."
+	elif [ "$microsoft_ds" == "445" ];then
+		echo "Microsoft-DS port is [OPEN]"
+		echo "Used for file and printer sharing, but exploited by malware such as WannaCry."
+	elif [ "$irc1" == "666" ];then
+		echo "IRC port is [OPEN]"
+		echo "Older malware might use IRC for communication."
+	elif [ "$irc2" == "667" ];then
+		echo "IRC port is [OPEN]"
+		echo "Older malware might use IRC for communication."
+	elif [ "$irc3" == "668" ];then
+		echo "IRC port is [OPEN]"
+		echo "Older malware might use IRC for communication."
+	elif [ "$irc4" == "669" ];then
+		echo "IRC port is [OPEN]"
+		echo "Older malware might use IRC for communication."
+	elif [ "$snmp" == "161" ];then
+		echo "SNMP (Simple Network Management Protocol) port is [OPEN]"
+		echo "SNMP services could be exploited for unauthorized network monitoring."
+	elif [ "$dhcp1" == "67" ];then
+		echo "DHCP (Dynamic Host Configuration Protocol) port is [OPEN]"
+		echo "Exploitation may lead to unauthorized access or network disruption."
+	elif [ "$dhcp2" == "68" ];then
+		echo "DHCP (Dynamic Host Configuration Protocol) port is [OPEN]"
+		echo "Exploitation may lead to unauthorized access or network disruption."
+
+	elif [ "$ssh" == "22" ];then
+		echo "SSH (Secure Shell) Port is [OPEN]"
+		echo "If open and unprotected, it could be exploited for unauthorized access."
+
+	elif [ "$isakmp" == "500" ];then
+		echo "ISAKMP (Internet Security Association and Key Management Protocol) Port is [OPEN]"
+		echo "Used for VPN communication but could be targeted for attacks."
+	elif [ "$proxy" == "8080" ];then
+		echo "8080 is Alternative HTTP port: [OPEN]"
+		echo "Often used for web proxies but could be used for malicious purposes."
+	elif [ "$backdoor1" == "42474" ];then
+		echo "There is probably a backdoor in the system"
+	else
+		echo "The ports were checked and no malicious port was found [ OK ]"
+
+	fi
+
+
+}
 
 
 am(){
