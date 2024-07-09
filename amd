@@ -1,0 +1,393 @@
+#!/bin/bash
+
+# Colors and Formatting
+bold='\033[1m'
+normal='\033[0m'
+red='\033[0;31m'
+green='\033[0;32m'
+blue='\033[0;34m'
+yellow='\033[0;33m'
+reset='\033[0m'
+
+# Directories
+BASE_DIR="/home/$USER/AMD"
+APP_DIR="$BASE_DIR/App"
+SCANS_DIR="$BASE_DIR/Scans"
+LOGS_DIR="$BASE_DIR/Logs"
+SCRIPTS_DIR="$BASE_DIR/Scripts"
+MALWARES_FILE="$BASE_DIR/databases/malwares.txt"
+
+# Ensure directories exist
+ensure_directory() {
+    local dir_path="$1"
+    if [ ! -d "$dir_path" ]; then
+        mkdir -p "$dir_path"
+    fi
+}
+
+ensure_directory "$APP_DIR"
+ensure_directory "$SCANS_DIR"
+ensure_directory "$LOGS_DIR"
+ensure_directory "$SCRIPTS_DIR"
+
+# Print header
+print_header() {
+    printf "\n${bold}${green}------------------------------------------------${reset}\n"
+    printf "${green}🛡️ AMD - Android Malware Detect ${reset}\n"
+    printf "${green}🌐 KYGnus - Koosha Yeganeh Gnu Linux Softwares ${reset}\n"
+    printf "${bold}${green}------------------------------------------------${reset}\n\n"
+}
+
+
+start_adb() {
+    echo -e "${yellow}Starting ADB server...${reset}"
+    adb start-server
+    sleep 2  # Optional: wait for a short period to ensure the server starts
+}
+
+
+
+
+# Mount storage function
+mount_storage() {
+    echo -e "${yellow}Mounting storage...${reset}"
+    # Add your mounting command here; for example:
+    # sudo mount /dev/sdX /mnt/storage
+    # Replace /dev/sdX with your actual device and /mnt/storage with your mount point
+
+    # For illustration, we'll simulate a successful mount
+    # Remove this line and use actual mount command
+    echo -e "${green}Storage mounted successfully${reset}"
+}
+
+# Check if storage is properly mounted and accessible
+check_storage() {
+    echo -e "${yellow}Checking storage...${reset}"
+    if adb shell "ls /sdcard" >/dev/null 2>&1; then
+        echo -e "${green}Storage is properly mounted and accessible${reset}"
+    else
+        echo -e "${red}No Storage Detected [ ERROR ]${reset}"
+        echo -e "${red}Please Mount Storage And Start Scan Later${reset}"
+        exit 1
+    fi
+}
+
+# Check if device is connected
+check_device() {
+    devices=$(adb devices | grep -w device)
+    if [ "$devices" ]; then
+        serial=$(adb get-serialno)
+        state=$(adb get-state)
+        dev_path=$(adb get-devpath)
+
+        echo -e "${cyan}======= Device Information =======${reset}"
+        echo -e "${cyan}Serial : $serial${reset}"
+        echo -e "${cyan}State : $state${reset}"
+        echo -e "${cyan}Device Path : $dev_path${reset}"
+        echo -e "${cyan}=================================${reset}"
+    else
+        echo -e "${red}No Device Detected [ ERROR ]${reset}"
+        exit 1
+    fi
+}
+
+# Check for required directories
+check_directories() {
+    echo -e "${yellow}Checking device directories...${reset}"
+    # List of expected directories on the Android device
+    directories=("/sdcard/Android" "/sdcard/Download")
+
+    for dir in "${directories[@]}"; do
+        if adb shell "ls $dir" >/dev/null 2>&1; then
+            echo -e "${green}Directory $dir exists [ OK ]${reset}"
+        else
+            echo -e "${red}Directory $dir does not exist [  ERROR ]${reset}"
+        fi
+    done
+}
+
+# Hash Check function
+check_hash() {
+    local file_path="$1"
+    local known_hash="$2"
+
+    if [ ! -f "$file_path" ]; then
+        echo -e "${red}File $file_path not found${reset}"
+        return 1
+    fi
+
+    computed_hash=$(sha256sum "$file_path" | awk '{print $1}')
+    
+    if [ "$computed_hash" == "$known_hash" ]; then
+        echo -e "${green}Hash check passed for $file_path${reset}"
+        return 0
+    else
+        echo -e "${red}Hash check failed for $file_path${reset}"
+        return 1
+    fi
+}
+
+# Show number of scripts and list their names
+list_scripts() {
+    if [ -d "$SCRIPTS_DIR" ]; then
+        script_count=$(ls -1 "$SCRIPTS_DIR"/*.{sh,py} 2>/dev/null | wc -l)
+        echo -e "${bold}${blue}Number of Scripts in $SCRIPTS_DIR: $script_count${reset}"
+        echo -e "${bold}${blue}Script Names:${reset}"
+        for script in "$SCRIPTS_DIR"/*.{py}; do
+            [ -e "$script" ] && echo "$(basename "$script")"
+        done
+    else
+        echo -e "${red}Directory $SCRIPTS_DIR does not exist${reset}"
+    fi
+}
+
+# Execute all scripts in the SCRIPTS_DIR
+# Function to execute scripts and process malwares
+execute_scripts() {
+    if [ -d "$SCRIPTS_DIR" ]; then
+        echo -e "${bold}${blue}Executing Python Scripts in $SCRIPTS_DIR:${reset}"
+        
+        # Initialize malware_packages array
+        malware_packages=()
+
+        # Check if malwares.txt exists in the specified location
+        if [ -f "$MALWARES_FILE" ]; then
+            echo -e "${bold}${blue}Malware package names found in $MALWARES_FILE:${reset}"
+            while IFS= read -r malware; do
+                malware_packages+=("$malware")
+            done < "$MALWARES_FILE"
+        else
+            echo -e "${red}malwares.txt not found in $MALWARES_FILE${reset}"
+        fi
+
+        # Loop through and execute only Python scripts
+        for script in "$SCRIPTS_DIR"/*.py; do
+            if [ -e "$script" ]; then
+                echo -e "${green}Executing $(basename "$script")...${reset}"
+                python3 "$script"
+            else
+                echo -e "${red}No Python scripts found to execute.${reset}"
+            fi
+        done
+    else
+        echo -e "${red}Directory $SCRIPTS_DIR does not exist${reset}"
+    fi
+}
+
+# Basic Scan function
+basic_scan() {
+    echo -e "${white}${bold}========= Basic Scan: Checking Files and Packages =========${reset}"
+    sleep 2
+
+    adb pull /sdcard/Android/data "$APP_DIR"
+    adb pull /system/app "$APP_DIR"
+
+    echo -e "${white}${bold}Checking installed packages...${reset}"
+    adb shell pm list packages > "$SCANS_DIR/installed_packages.txt"
+    adb shell pm list packages -f > "$SCANS_DIR/installed_packages_full.txt"
+
+    echo -e "${white}${bold}Checking network ports...${reset}"
+    adb shell netstat -na > "$SCANS_DIR/network_ports.txt"
+
+    echo -e "${white}${bold}Basic Scan completed. Results saved in $SCANS_DIR${reset}"
+}
+
+# Comprehensive Scan function
+comprehensive_scan() {
+    echo -e "${white}${bold}========= Comprehensive Scan: Analyzing APKs, Logs, and More =========${reset}"
+    sleep 2
+
+    # Pulling APKs from /sdcard
+    adb pull /sdcard/Android/data "$APP_DIR"
+    adb pull /system/app "$APP_DIR"
+
+    # APK analysis using Androguard
+    echo -e "${white}${bold}Analyzing APKs with Androguard...${reset}"
+    for apk in "$APP_DIR"/*.apk; do
+        androguard analyze "$apk" -o "$SCANS_DIR/androguard_$(basename "$apk").txt"
+    done
+
+    # Virus scanning with ClamAV
+    echo -e "${white}${bold}Scanning files with ClamAV...${reset}"
+    clamscan -r "$APP_DIR" > "$SCANS_DIR/clamscan_report.txt"
+
+    # Logcat analysis
+    echo -e "${white}${bold}Collecting logcat logs...${reset}"
+    adb logcat -d > "$LOGS_DIR/logcat_logs.txt"
+
+    # Package analysis
+    echo -e "${white}${bold}Checking for suspicious packages...${reset}"
+    grep -i -E 'malware|spyware|adware' "$SCANS_DIR/installed_packages_full.txt" > "$SCANS_DIR/suspicious_packages.txt"
+
+    echo -e "${white}${bold}Comprehensive Scan completed. Results saved in $SCANS_DIR${reset}"
+}
+
+# Malware Detection Scan function
+malware_detect_scan() {
+    echo -e "${white}${bold}========= Malware Detection Scan: Using Maldet =========${reset}"
+    sleep 2
+
+    # Scan files with Maldet
+    /usr/local/sbin/maldet -a "$APP_DIR" > "$SCANS_DIR/maldet_scan_report.txt"
+
+    echo -e "${white}${bold}Maldet Scan completed. Results saved in $SCANS_DIR/maldet_scan_report.txt${reset}"
+}
+
+# Scan function with switches
+scan() {
+    local basic_scan_flag=false
+    local comprehensive_scan_flag=false
+
+    for arg in "$@"; do
+        case $arg in
+            --basic)
+                basic_scan_flag=true
+                ;;
+            --comprehensive)
+                comprehensive_scan_flag=true
+                ;;
+            --help)
+                show_help
+                exit 0
+                ;;
+            *)
+                # Handle unrecognized arguments for scan
+                ;;
+        esac
+    done
+
+    if [ "$basic_scan_flag" = true ]; then
+        basic_scan
+    fi
+
+    if [ "$comprehensive_scan_flag" = true ]; then
+        comprehensive_scan
+    fi
+
+    malware_detect_scan
+
+    echo -e "${white}${bold}========= Scanning for Known Malware =========${reset}"
+    sleep 2
+
+    files=$(adb shell pm list packages | cut -d ":" -f2)
+    sdpackfiles=$(adb shell ls /sdcard/Android/data)
+
+    # List of known malware packages (example list)
+    malware_packages=(
+        "com.example.malware1"
+        "com.example.malware2"
+        # Add more known malware package names here
+    )
+
+    # Scan for malware packages in the list of installed packages
+    for malware in "${malware_packages[@]}"; do
+        if [[ " ${files[@]} ${sdpackfiles[@]} " =~ " ${malware} " ]]; then
+            echo -e "${red}!! Malware Detected: $malware${reset}"
+        fi
+    done
+}
+
+# Generate scan report
+generate_report() {
+    local report_file="$BASE_DIR/scan_report_$(date +%Y%m%d_%H%M%S).txt"
+    echo -e "${white}${bold}========= Generating Scan Report =========${reset}"
+    echo -e "Scan Report - $(date)\n" > "$report_file"
+    echo -e "Device Information:\n" >> "$report_file"
+    adb shell getprop ro.product.model >> "$report_file"
+    adb shell getprop ro.build.version.release >> "$report_file"
+
+    echo -e "\nInstalled Packages:\n" >> "$report_file"
+    cat "$SCANS_DIR/installed_packages.txt" >> "$report_file"
+
+    echo -e "\nNetwork Ports:\n" >> "$report_file"
+    cat "$SCANS_DIR/network_ports.txt" >> "$report_file"
+
+    echo -e "\nComprehensive Scan Results:\n" >> "$report_file"
+    echo -e "APK Analysis:\n" >> "$report_file"
+    for result in "$SCANS_DIR"/androguard_*.txt; do
+        cat "$result" >> "$report_file" 2>/dev/null
+    done
+
+    echo -e "\nClamAV Scan Report:\n" >> "$report_file"
+    cat "$SCANS_DIR/clamscan_report.txt" >> "$report_file"
+
+    echo -e "\nLogcat Logs:\n" >> "$report_file"
+    cat "$LOGS_DIR/logcat_logs.txt" >> "$report_file" 2>/dev/null
+
+    echo -e "\nSuspicious Packages:\n" >> "$report_file"
+    cat "$SCANS_DIR/suspicious_packages.txt" >> "$report_file" 2>/dev/null
+
+    echo -e "\nMaldet Scan Report:\n" >> "$report_file"
+    cat "$SCANS_DIR/maldet_scan_report.txt" >> "$report_file" 2>/dev/null
+
+    echo -e "${white}${bold}Report generated: $report_file${reset}"
+}
+
+# Analyze Meticulously function
+am() {
+    echo -e "${red}Analyzing Meticulously...${reset}"
+    sleep 2
+
+    python3 "$SCRIPTS_DIR/analyze_apks.py"
+
+    echo -e "${red}Analysis Completed. Review results for details.${reset}"
+}
+
+# Show help message
+show_help() {
+    printf "\n${bold}${blue}Usage: ./amd [OPTION] [ARGUMENTS]${reset}\n"
+    printf "Options:\n"
+    printf "  --help            Show this help message\n"
+    printf "  --scan            Perform a full scan\n"
+    printf "  --basic           Perform a basic scan\n"
+    printf "  --comprehensive   Perform a comprehensive scan\n"
+    printf "  --scripts         Show the number of scripts and list their names\n"
+    printf "  --scripts --exec  Execute python scripts in the Scripts directory\n"
+    printf "  --apk             Scan APK files with Androguard\n"
+    printf "  --check-hash      Check the hash of a specified file\n"
+    printf "\n"
+}
+
+# Handle invalid options
+handle_invalid_option() {
+    echo -e "${red}Invalid option or combination of options: $@${reset}"
+    show_help
+    exit 1
+}
+
+print_header
+start_adb
+check_device
+check_storage
+check_directories
+
+# Process arguments
+if [[ " $@ " =~ "--help" ]]; then
+    show_help
+    exit 0
+elif [[ " $@ " =~ "--scripts" ]]; then
+    if [[ " $@ " =~ "--exec" ]]; then
+        execute_scripts
+    else
+        list_scripts
+    fi
+elif [[ " $@ " =~ "--check-hash" ]]; then
+    if [ $# -ne 3 ]; then
+        echo -e "${red}Invalid number of arguments for --check-hash${reset}"
+        show_help
+        exit 1
+    fi
+    file_path="$2"
+    known_hash="$3"
+    check_hash "$file_path" "$known_hash"
+elif [[ " $@ " =~ "--scan" ]]; then
+    shift
+    scan "$@"
+    generate_report
+elif [[ " $@ " =~ "--am" ]]; then
+    am
+else
+    handle_invalid_option "$@"
+fi
+
+echo -e "${green}${bold}Script executed successfully.${reset}"

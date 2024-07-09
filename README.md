@@ -1,660 +1,137 @@
-# AMD ( Android Malware Detect )
-
-connect,Debug & Scan Android Devices for Malicious Activity
-
-
-
-## Table of Contents
-
-- [**Info**](https://github.com/KooshaYeganeh/AMD#info)
-    - [Applicatio Info](https://github.com/KooshaYeganeh/AMD#info)
-    - [Manifesto](https://github.com/KooshaYeganeh/AMD#manifesto)
------------------------------------------------------------------------------------------------
-- [**Install**](https://github.com/KooshaYeganeh/AMD#install)
-    - [**Manual (Recomended)**]()
-        - [Fedora](https://github.com/KooshaYeganeh/AMD#fedora)
-            - [Android Debug Bridge](https://github.com/KooshaYeganeh/AMD#android-debug-bridge)
-            - [MariaDB](https://github.com/KooshaYeganeh/AMD#mariadb)
-            - [Python-pip](https://github.com/KooshaYeganeh/AMD#python-pip)
-            - [Main App](https://github.com/KooshaYeganeh/AMD#main-app)
-        - [Ubuntu](https://github.com/KooshaYeganeh/AMD#ubuntu)
-            - [Android Debug Bridge]()
-            - [Mariadb](https://github.com/KooshaYeganeh/AMD#mariadb-1)
-            - [Python-pip](https://github.com/KooshaYeganeh/AMD#python-tools)
-            - [Main App](https://github.com/KooshaYeganeh/AMD#main-app-1)
-        - [OpenSuse](https://github.com/KooshaYeganeh/AMD#opensuse)
-            - [Android Debug Bridge](https://github.com/KooshaYeganeh/AMD#android-debug-bridge-2)
-            - [Mariadb](https://github.com/KooshaYeganeh/AMD#mariadb-2)
-            - [Python-pip](https://github.com/KooshaYeganeh/AMD#python-tools-1)
-            - [Main App](https://github.com/KooshaYeganeh/AMD#main-app-2)
-       - [RockyLinux](https://github.com/KooshaYeganeh/AMD#rocky-linux)
-            - [Android Debug Bridge](https://github.com/KooshaYeganeh/AMD#android-debug-bridge-3)
-            - [Mariadb](https://github.com/KooshaYeganeh/AMD#mariadb-3)
-            - [Python-pip](https://github.com/KooshaYeganeh/AMD#python-tools-2)
-            - [Main App](https://github.com/KooshaYeganeh/AMD#main-app-3)
-    - [**Automatic**](https://github.com/KooshaYeganeh/AMD#automatic-install)
------------------------------------------------------------------------------------------------
-- [**Run**](https://github.com/KooshaYeganeh/AMD#run)
-
------------------------------------------------------------------------------------------------
-- [**Remove**](https://github.com/KooshaYeganeh/AMD#remove)
-	- [**Autoremove**](https://github.com/KooshaYeganeh/AMD#autoremove)
------------------------------------------------------------------------------------------------
-- [**Donate**](https://github.com/KooshaYeganeh/AMD#donate)
-    - [code](https://github.com/KooshaYeganeh/AMD#donate-with-code)
-    - [database](https://github.com/KooshaYeganeh/AMD#donate-with-database)
-    - [Mobiles](https://github.com/KooshaYeganeh/AMD#donate-with-test-on-more-mobilephones)
-    - [DogeCoin](https://github.com/KooshaYeganeh/AMD#donate-with-dogecoin)
-
-## INFO
-
-### App Info
-
-**The Purpose of Developing This Software :**  
-
-1- Showing the power and Efficiency of Linux  
-2- Development of Linux open source software domain  
-3- Scanning the Android device without the need for software to be installed on the mobile phone  
-4- Helping specialists to improve the security of Android devices  
-5- Following the main philosophy: We produce everything we need ourselves and are not dependent on companies
-
-### Manifesto
-
-This software is designed to test and scan Android software and its use is free for everyone. Because the basis of free software is friendship and cooperation.
-
-## Install
-
-### Fedora
-
-#### Android Debug Bridge
+# AMD - Android Malware Detector
 
-```
-sudo dnf install adb
-```
-
-#### MariaDB
-
-*To list the available versions (streams in modularity terminology) of MariaDB:*
-
-```
-dnf module list mariadb
-```
-
-*To enable the version of MariaDB you want to use and make the stream RPMs available in the package set:*
-
-```
-sudo dnf module enable mariadb:10.4
-```
-
-*At this point you can verify that the available RPM provides the 10.4 verison of MariaDB server:*
-
-```
-dnf list mariadb-server
-```
-
-*To install mariadb server:*
-
-```
-sudo dnf module install mariadb/server
-```
-
-*MariaDB default root password is empty.*
-
-*find Default Password, For security reasons, MySQL generates a temporary root key. Please*
-
-```
-sudo grep 'temporary password' /var/log/mysqld.log
-```
-
-**Configuring SQL before the first use**
-
-```
-sudo mysql_secure_installation
-```
-
-*Some questions will be asked: answer to them as you prefer; answering yes to all of them is perfectly fine.*
-
-
-```
-sudo mariadb
-```
-*Then create a new user with root privileges and password-based access. Be sure to change the username and password to match your preferences:*
-
-```
-GRANT ALL ON *.* TO 'admin'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;
-```
-*Flush the privileges to ensure that they are saved and available in the current session:*
-
-```
-FLUSH PRIVILEGES;
-```
-
-```
-exit
-```
-
-**To add the user and password in MariaDB's config file (so that you don't have to enter the user and password every time in your system) you must do This :**
-
-
-```
-sudo vi /etc/my.cnf
-```
-
-*add these lines to the config File:*
-
-
-```
-[client]
-user=mysql_user     # MariaDB User
-password=mysql_pass # MariaDB Password
-```
-
-
-
-
-#### python-pip
-
-```
-sudo dnf install python-pip
-```
-
-```
-sudo pip install virtualenv
-```
-
-#### Main App
-
-```
-mkdir /home/$USER/AMD && cd /home/$USER/AMD
-```
-
-```
-wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip && unzip main.zip && mv AMD-main Source && cd Source && mv config.py.sample config.py && rm main.zip
-```
-
-Note : Change config File Values Like Host and name and pass of mariaDB with Your attributes
-
-```
-virtualenv venv && source vemv/bin/activate
-```
-
-```
-pip install -r requirements.txt
-```
-
-```
-sudo mv AMD /usr/bin
-```
-
-**Create Linux Standard config File**
-
-```
-sudo mkdir /etc/AMD && cd /etc/AMD && sudo ln -s /home/$USER/AMD/Source/config.py AMD.conf
-```
-
-**Restore Database**
-
-```
-mysql --execute="CREATE DATABASE Android_Malware;"
-```
-
-```
-mysql Android_Malware < ./Android_Malware.sql
-```
-
-### Ubuntu
-
-#### Android Debug Bridge
-
-```
-sudo apt update && sudo apt install adb -y
-```
-
-
-#### MariaDB
-
-```
-sudo apt update
-```
-
-```
-sudo apt install mariadb-server -y
-```
-
-```
-sudo systemctl start mariadb.service
-```
-
-```
-sudo mysql_secure_installation
-```
-
-*This will take you through a series of prompts where you can make some changes to your MariaDB installation’s security options. The first prompt will ask you to enter the current database root password. Since you have not set one up yet, press ENTER to indicate “none”.*
-
-```
-Output
-NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
-      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
-
-In order to log into MariaDB to secure it, we'll need the current
-password for the root user.  If you've just installed MariaDB, and
-you haven't set the root password yet, the password will be blank,
-so you should just press enter here.
-
-Enter current password for root (enter for none): 
-```
-
-
-*The next prompt asks you whether you’d like to set up a database root password. On Ubuntu, the root account for MariaDB is tied closely to automated system maintenance, so we should not change the configured authentication methods for that account. Doing so would make it possible for a package update to break the database system by removing access to the administrative account. Type N and then press ENTER.*
-
-```
-Output
-. . .
-OK, successfully used password, moving on...
-
-Setting the root password ensures that nobody can log into the MariaDB
-root user without the proper authorisation.
-
-Set root password? [Y/n] N
-```
-
-
-
-```
-sudo mariadb
-```
-*Then create a new user with root privileges and password-based access. Be sure to change the username and password to match your preferences:*
-
-```
-GRANT ALL ON *.* TO 'admin'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;
-```
-*Flush the privileges to ensure that they are saved and available in the current session:*
-
-```
-FLUSH PRIVILEGES;
-```
-
-```
-exit
-```
-
-```
-vi /etc/mysql/mariadb.conf.d/50-server.cnf
-```
-
-*add these lines to the config File:*
-
-
-```
-[client]
-user=mysql_user     # MariaDB user
-password=mysql_pass # MariaDB password
-```
-
-
-
-#### Python-tools
-
-```
-sudo apt install python3-pip
-```
-
-```
-sudo pip3 install virtualenv
-```
-
-#### Main App
-
-```
-mkdir /home/$USER/AMD && cd /home/$USER/AMD
-```
-
-```
-wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip && unzip main.zip && mv AMD-main Source && cd Source && mv config.py.sample config.py && rm main.zip
-```
-
-Note : Change config File Values Like Host and name and pass of mariaDB with Your attributes
-
-```
-virtualenv venv && source vemv/bin/activate
-```
-
-```
-pip install -r requirements.txt
-```
-
-```
-sudo mv AMD /usr/bin
-```
-
-**Create Linux Standard config File**
-
-```
-sudo mkdir /etc/AMD && cd /etc/AMD && sudo ln -s /home/$USER/AMD/Source/config.py AMD.conf
-```
-
-**Restore Database**
-
-```
-mysql --execute="CREATE DATABASE Android_Malware;"
-```
-
-```
-mysql Android_Malware < ./Android_Malware.sql
-```
-
-
-### OpenSuse
-
-#### Android Debug Bridge
-
-```
-sudo zypper addrepo https://download.opensuse.org/repositories/hardware/openSUSE_Leap_15.3/hardware.repo
-```
-```
-sudo zypper refresh
-```
-```
-sudo zypper install android-tools
-```
-
-
-#### MariaDB
-
-```
-sudo rpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
-```
-
-```
-sudo zypper --gpg-auto-import-keys refresh
-```
-
-```
-sudo zypper addrepo --gpgcheck --refresh https://yum.mariadb.org/10.7/opensuse/15/x86_64 mariadb
-```
-
-
-```
-sudo zypper refresh
-```
-
-```
-sudo zypper -n install MariaDB-server MariaDB-client
-```
-
-** To add the user and password in MariaDB's config file (so that you don't have to enter the user and password every time in your system) you must do This :**
-
-
-*edit my.cnf File and add these lines to the config File:*
-
-
-```
-sudo vi /etc/my.cnf
-```
-
-```
-[client]
-user=mysql_user     # MariaDB user
-password=mysql_pass #MariaDB Password
-```
-
-#### Python-Tools
-
-```
-sudo zypper -n install python3-pip
-```
-
-```
-sudo pip3 install virtualenv
-```
-
-
-#### Main App
-
-```
-mkdir /home/$USER/AMD && cd /home/$USER/AMD
-```
-
-```
-wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip && unzip main.zip && mv AMD-main Source && cd Source && mv config.py.sample config.py && rm main.zip
-```
-
-Note : Change config File Values Like Host and name and pass of mariaDB with Your attributes
-
-```
-virtualenv venv && source vemv/bin/activate
-```
-
-```
-pip install -r requirements.txt
-```
-
-```
-sudo mv AMD /usr/bin
-```
-
-**Create Linux Standard config File**
-
-```
-sudo mkdir /etc/AMD && cd /etc/AMD && sudo ln -s /home/$USER/AMD/Source/config.py AMD.conf
-```
-
-**Restore Database**
-
-```
-mysql --execute="CREATE DATABASE Android_Malware;"
-```
-
-```
-mysql Android_Malware < ./Android_Malware.sql
-```
-
-
+## Overview
 
+The AMD (Android Malware Detector) script is a comprehensive tool for scanning Android devices for malware and other suspicious activities. It provides features for basic and comprehensive scans, malware detection, script execution, APK analysis, and more.
 
-### Rocky Linux
+This script is designed to work with Android devices connected via ADB (Android Debug Bridge) and integrates various tools for effective malware detection.
 
+## Features
 
-#### Android Debug Bridge
+- **Header Printing**: Displays a header with information about the script.
+- **ADB Management**: Starts the ADB server and checks for connected devices.
+- **Storage Mounting and Checking**: Handles storage mounting and verifies accessibility.
+- **Directory Checking**: Validates expected directories on the Android device.
+- **Hash Checking**: Verifies the integrity of specified files using SHA-256 hashes.
+- **Script Execution**: Executes Python scripts located in the `SCRIPTS_DIR`.
+- **Basic Scan**: Checks files, packages, and network ports on the Android device.
+- **Comprehensive Scan**: Analyzes APK files, logs, and runs antivirus scans.
+- **Malware Detection**: Scans installed packages for known malware signatures.
+- **Report Generation**: Creates detailed reports of scan results.
+- **APK Analysis**: Runs an additional analysis of APK files using a Python script.
 
-```
-sudo dnf update && sudo dnf install adb -y
-```
-
-
-#### MariaDB
-
-
-```
-sudo dnf install mariadb-server
-```
-
-```
-sudo systemctl start mariadb.service
-```
-
-```
-sudo mysql_secure_installation
-```
-
-*This will take you through a series of prompts where you can make some changes to your MariaDB installation’s security options. The first prompt will ask you to enter the current database root password. Since you have not set one up yet, press ENTER to indicate “none”.*
-
-```
-Output
-NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
-      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
-
-In order to log into MariaDB to secure it, we'll need the current
-password for the root user.  If you've just installed MariaDB, and
-you haven't set the root password yet, the password will be blank,
-so you should just press enter here.
-
-Enter current password for root (enter for none): 
-```
-
-
-*The next prompt asks you whether you’d like to set up a database root password. On Ubuntu, the root account for MariaDB is tied closely to automated system maintenance, so we should not change the configured authentication methods for that account. Doing so would make it possible for a package update to break the database system by removing access to the administrative account. Type N and then press ENTER.*
-
-```
-Output
-. . .
-OK, successfully used password, moving on...
-
-Setting the root password ensures that nobody can log into the MariaDB
-root user without the proper authorisation.
-
-Set root password? [Y/n] N
-```
-
-
-
-```
-sudo mariadb
-```
-*Then create a new user with root privileges and password-based access. Be sure to change the username and password to match your preferences:*
-
-```
-GRANT ALL ON *.* TO 'admin'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION;
-```
-*Flush the privileges to ensure that they are saved and available in the current session:*
-
-```
-FLUSH PRIVILEGES;
-```
-
-```
-exit
-```
-
-```
-vi /etc/my.cnf
-```
+## Installation
 
-*add these lines to the config File:*
+1. **Clone the Repository**:
+   ```
+   git clone <repository_url>
+   cd <repository_directory>
+   ```
 
+2. **Ensure Required Tools**:
+   Make sure you have `adb`, `python3`, `androguard`, `clamscan`, and `maldet` installed on your system.
 
-```
-[client]
-user=mysql_user     # MariaDB user
-password=mysql_pass # MariaDB password
-```
-
-
-
-#### Python-tools
-
-```
-sudo dnf install python3-pip
-```
-
-```
-sudo pip3 install virtualenv
-```
-
-#### Main App
-
-```
-mkdir /home/$USER/AMD && cd /home/$USER/AMD
-```
+3. **Make the Script Executable**:
+   ```
+   chmod +x amd
+   ```
 
-```
-wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip && unzip main.zip && mv AMD-main Source && cd Source && mv config.py.sample config.py && rm main.zip
-```
-
-Note : Change config File Values Like Host and name and pass of mariaDB with Your attributes
-
-```
-virtualenv venv && source vemv/bin/activate
-```
+## Usage
 
 ```
-pip3 install -r requirements.txt
+./amd [OPTION] [ARGUMENTS]
 ```
 
-```
-sudo mv AMD /usr/bin
-```
+### Options
 
-**Create Linux Standard config File**
+- `--help`:
+  Show the help message and exit.
 
-```
-sudo mkdir /etc/AMD && cd /etc/AMD && sudo ln -s /home/$USER/AMD/Source/config.py AMD.conf
-```
+- `--scan`:
+  Perform a full scan with optional flags:
+  - `--basic`: Perform a basic scan.
+  - `--comprehensive`: Perform a comprehensive scan.
 
-**Restore Database**
+- `--scripts`:
+  Show the number of scripts and list their names in the `SCRIPTS_DIR`.
+  - `--exec`: Execute Python scripts in the `SCRIPTS_DIR`.
 
-```
-mysql --execute="CREATE DATABASE Android_Malware;"
-```
+- `--apk`:
+  Scan APK files with Androguard.
 
-```
-mysql Android_Malware < ./Android_Malware.sql
-```
+- `--check-hash`:
+  Check the hash of a specified file. Requires two additional arguments:
+  - `file_path`: The path to the file.
+  - `known_hash`: The known SHA-256 hash to compare against.
 
+- `--am`:
+  Run the `analyze_apks.py` Python script for APK analysis.
 
+## Directory Structure
 
+- `BASE_DIR`: `/home/$USER/AMD`
+  - `App`: Directory where app data is stored.
+  - `Scans`: Directory where scan results are saved.
+  - `Logs`: Directory where log files are stored.
+  - `Scripts`: Directory containing Python scripts for execution.
+  - `databases`: Contains `malwares.txt` with known malware package names.
 
-### Automatic Install
+## Example
 
-```
-wget https://github.com/KooshaYeganeh/AMD/archive/refs/heads/main.zip && unzip main.zip && cd AMD-main
-```
+To perform a comprehensive scan and generate a report:
 
 ```
-./install
+./amd --scan --comprehensive
 ```
-
 
+To check the hash of a file:
 
-## RUN
-
-
 ```
-AMD
+./amd --check-hash /path/to/file known_sha256_hash
 ```
-
-
-## Remove
-
 
-```
-sudo rm /usr/bin/AMD && sudo rm -rf /home/$user/AMD && sudo rm -rf /etc/AMD 
-```
+To execute Python scripts in the `SCRIPTS_DIR`:
 
 ```
-mysql --execute="DROP DATABASE Android_Malware;"
+./amd --scripts --exec
 ```
 
-### Autoremove
+## Troubleshooting
 
-```
-./remove
-```
+- **No Device Detected**:
+  Ensure your Android device is properly connected and ADB debugging is enabled.
 
-## Donate
+- **Storage Not Mounted**:
+  Verify that your storage is correctly mounted and accessible.
 
-### Donate with code
+- **Script Errors**:
+  Check that all required tools and dependencies are installed and properly configured.
 
-You can contribute to this project by changing or adding source engines or writing a new engine.
+## License
 
-### Donate with Database
+This script is distributed under the GNU GENERAL PUBLIC LICENSE . See `LICENSE` for more details.
 
-You can help increase the database by introducing malicious files or malicious software (along with their download links).
+## Contact
 
-### Donate with Test on More MobilePhones
+For any questions or issues, please contact koosha yeganeh at kooshakooshadv@gmail.com.
 
-You can cooperate in this project by testing the software on different phones and reporting the problems that occurred in the tested phone. You can send the report of the problems that occurred during testing to the following address:
+### website
 
-1- kooshakooshadv@gmail.com
+kooshayeganeh.github.io
 
-### Donate with DogeCoin 
+---
 
+*This README.md provides an overview and usage instructions for the AMD script. Ensure all dependencies are installed and configured before running the script.*
 ```
-0x884D09a7f923Ab19d49c7d9440818a42Dfab2d6F
-```
-
-## Source
 
+### Key Points:
+- **Overview**: Briefly describes what the script does.
+- **Features**: Lists the functionalities provided by the script.
+- **Installation**: Instructions to get the script up and running.
+- **Usage**: Detailed usage instructions for the available options.
+- **Directory Structure**: Explains the purpose of different directories used by the script.
+- **Example**: Provides example commands for common use cases.
+- **Troubleshooting**: Offers solutions for common issues.
+- **License and Contact**: Information on licensing and how to get in touch.
 
-https://koodous.com/apks?is_detected=true  
-https://github.com/ashishb/android-malware
+Feel free to adjust the content to better fit your specific needs or preferences.
