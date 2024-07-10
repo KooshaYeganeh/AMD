@@ -1,137 +1,96 @@
-# AMD - Android Malware Detector
+```markdown
+# KYGNUS AMD - Android Malware Detection Tool
 
 ## Overview
 
-The AMD (Android Malware Detector) script is a comprehensive tool for scanning Android devices for malware and other suspicious activities. It provides features for basic and comprehensive scans, malware detection, script execution, APK analysis, and more.
-
-This script is designed to work with Android devices connected via ADB (Android Debug Bridge) and integrates various tools for effective malware detection.
+KYGNUS AMD (Android Malware Detection) is a comprehensive tool designed to scan Android devices for malware and other suspicious activities. It integrates multiple scanning engines and techniques to ensure thorough analysis and detection. This tool is part of the LoA Project (Linux on Android).
 
 ## Features
 
-- **Header Printing**: Displays a header with information about the script.
-- **ADB Management**: Starts the ADB server and checks for connected devices.
-- **Storage Mounting and Checking**: Handles storage mounting and verifies accessibility.
-- **Directory Checking**: Validates expected directories on the Android device.
-- **Hash Checking**: Verifies the integrity of specified files using SHA-256 hashes.
-- **Script Execution**: Executes Python scripts located in the `SCRIPTS_DIR`.
-- **Basic Scan**: Checks files, packages, and network ports on the Android device.
-- **Comprehensive Scan**: Analyzes APK files, logs, and runs antivirus scans.
-- **Malware Detection**: Scans installed packages for known malware signatures.
-- **Report Generation**: Creates detailed reports of scan results.
-- **APK Analysis**: Runs an additional analysis of APK files using a Python script.
+- **ClamAV Integration**: Scans files with ClamAV.
+- **Abnormal File Detection**: Identifies and removes suspicious executable files.
+- **Hash Checking**: Compares file hashes against known malware hashes.
+- **YARA Rules**: Scans files using YARA rules.
+- **System Updates**: Updates the system and malware databases.
+- **File Signature Checks**: Verifies file signatures to detect malware.
+- **APK Analysis**: Scans APK files using Androguard.
+- **Comprehensive Reporting**: Provides detailed scan results.
 
 ## Installation
 
-1. **Clone the Repository**:
+1. **Get From website for rpm Based Linux's**:
    ```
-   git clone <repository_url>
-   cd <repository_directory>
+   cd /tmp && wget https://kooshayeganeh.github.io/Files/amd-1.0.0.noarch.rpm && sudo rpm -ivh amd-1.0.0.noarch.rpm && cd
    ```
 
 2. **Ensure Required Tools**:
    Make sure you have `adb`, `python3`, `androguard`, `clamscan`, and `maldet` installed on your system.
 
 3. **Make the Script Executable**:
-   ```
+   ```sh
    chmod +x amd
    ```
 
 ## Usage
 
-```
+```sh
 ./amd [OPTION] [ARGUMENTS]
 ```
 
 ### Options
 
-- `--help`:
-  Show the help message and exit.
-
-- `--scan`:
-  Perform a full scan with optional flags:
-  - `--basic`: Perform a basic scan.
-  - `--comprehensive`: Perform a comprehensive scan.
-
-- `--scripts`:
-  Show the number of scripts and list their names in the `SCRIPTS_DIR`.
-  - `--exec`: Execute Python scripts in the `SCRIPTS_DIR`.
-
-- `--apk`:
-  Scan APK files with Androguard.
-
-- `--check-hash`:
-  Check the hash of a specified file. Requires two additional arguments:
-  - `file_path`: The path to the file.
-  - `known_hash`: The known SHA-256 hash to compare against.
-
-- `--am`:
-  Run the `analyze_apks.py` Python script for APK analysis.
+- `--help`: Show the help message and exit.
+- `--scan`: Perform a full scan.
+- `--clamav`: Scan with ClamAV.
+- `--amd`: Perform AMD-specific scans.
+- `--yara`: Perform a scan with YARA rules only.
+- `--update`: Update the system and malware databases.
+- `--apk`: Scan APK files with Androguard.
+- `--scripts`: Show the number of scripts in the `SCRIPTS_DIR` and list their names.
 
 ## Directory Structure
 
-- `BASE_DIR`: `/home/$USER/AMD`
-  - `App`: Directory where app data is stored.
-  - `Scans`: Directory where scan results are saved.
-  - `Logs`: Directory where log files are stored.
-  - `Scripts`: Directory containing Python scripts for execution.
-  - `databases`: Contains `malwares.txt` with known malware package names.
+- **BASE_DIR**: `/home/$USER/AMD`
+  - **App**: Directory where app data is stored.
+  - **Scans**: Directory where scan results are saved.
+  - **Logs**: Directory where log files are stored.
+  - **Scripts**: Directory containing Python scripts for execution. Users should add their Python scripts here.
+  - **databases**: Contains `malwares.txt` with known malware package names and other relevant databases.
+
+## Adding Custom Scripts and Malware Hashes
+
+- **Python Scripts**: Add your Python scripts to `/home/$USER/AMD/Scripts`.
+- **Malware Hashes**: Add known malware hashes to `/home/$USER/AMD/databases/malwares.txt`.
 
 ## Example
 
 To perform a comprehensive scan and generate a report:
 
-```
-./amd --scan --comprehensive
-```
-
-To check the hash of a file:
-
-```
-./amd --check-hash /path/to/file known_sha256_hash
+```sh
+./amd --scan
 ```
 
 To execute Python scripts in the `SCRIPTS_DIR`:
 
-```
-./amd --scripts --exec
+```sh
+./amd --scripts
 ```
 
 ## Troubleshooting
 
-- **No Device Detected**:
-  Ensure your Android device is properly connected and ADB debugging is enabled.
-
-- **Storage Not Mounted**:
-  Verify that your storage is correctly mounted and accessible.
-
-- **Script Errors**:
-  Check that all required tools and dependencies are installed and properly configured.
+- **No Device Detected**: Ensure your Android device is properly connected and ADB debugging is enabled.
+- **Storage Not Mounted**: Verify that your storage is correctly mounted and accessible.
+- **Script Errors**: Check that all required tools and dependencies are installed and properly configured.
 
 ## License
 
-This script is distributed under the GNU GENERAL PUBLIC LICENSE . See `LICENSE` for more details.
+This script is distributed under the GNU GENERAL PUBLIC LICENSE. See `LICENSE` for more details.
 
 ## Contact
 
-For any questions or issues, please contact koosha yeganeh at kooshakooshadv@gmail.com.
+For any questions or issues, please contact Koosha Yeganeh at kooshakooshadv@gmail.com.
 
-### website
+### Website
 
-kooshayeganeh.github.io
+[kooshayeganeh.github.io](https://kooshayeganeh.github.io)
 
----
-
-*This README.md provides an overview and usage instructions for the AMD script. Ensure all dependencies are installed and configured before running the script.*
-```
-
-### Key Points:
-- **Overview**: Briefly describes what the script does.
-- **Features**: Lists the functionalities provided by the script.
-- **Installation**: Instructions to get the script up and running.
-- **Usage**: Detailed usage instructions for the available options.
-- **Directory Structure**: Explains the purpose of different directories used by the script.
-- **Example**: Provides example commands for common use cases.
-- **Troubleshooting**: Offers solutions for common issues.
-- **License and Contact**: Information on licensing and how to get in touch.
-
-Feel free to adjust the content to better fit your specific needs or preferences.
