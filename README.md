@@ -1,96 +1,138 @@
-```markdown
-# KYGNUS AMD - Android Malware Detection Tool
+# Android Malware Detection Script (KYGNUS AMD)
 
-## Overview
-
-KYGNUS AMD (Android Malware Detection) is a comprehensive tool designed to scan Android devices for malware and other suspicious activities. It integrates multiple scanning engines and techniques to ensure thorough analysis and detection. This tool is part of the LoA Project (Linux on Android).
+This script is designed to perform a comprehensive malware scan on an Android device using various tools and methods. It supports scanning with ClamAV, YARA, Androguard, and more. It also provides functionality for checking system integrity, permissions, and monitoring network activity.
 
 ## Features
 
-- **ClamAV Integration**: Scans files with ClamAV.
-- **Abnormal File Detection**: Identifies and removes suspicious executable files.
-- **Hash Checking**: Compares file hashes against known malware hashes.
-- **YARA Rules**: Scans files using YARA rules.
-- **System Updates**: Updates the system and malware databases.
-- **File Signature Checks**: Verifies file signatures to detect malware.
-- **APK Analysis**: Scans APK files using Androguard.
-- **Comprehensive Reporting**: Provides detailed scan results.
+- **ADB Integration**: Pulls files from an Android device, checks device connectivity, and monitors network activity.
+- **Malware Scanning**: Uses ClamAV, YARA rules, and Androguard to scan for malware.
+- **System Checks**: Verifies storage, directories, permissions, and more.
+- **Image Scanning**: Analyzes boot images using `abootimg`.
+- **Script Management**: Lists and executes scripts from a specified directory.
+- **File Analysis**: Checks file types and searches for sensitive strings in files.
+
+## Prerequisites
+
+- **ADB**: Android Debug Bridge should be installed and accessible.
+- **YARA**: YARA tool should be installed.
+- **Androguard**: Python-based tool for analyzing Android applications.
+- **ClamAV**: Antivirus tool for scanning files.
+- **abootimg**: Tool for inspecting boot images.
 
 ## Installation
 
-1. **Get From website for rpm Based Linux's**:
-   ```
-   cd /tmp && wget https://kooshayeganeh.github.io/Files/amd-1.0.0.noarch.rpm && sudo rpm -ivh amd-1.0.0.noarch.rpm && cd
-   ```
+1. .deb
 
-2. **Ensure Required Tools**:
-   Make sure you have `adb`, `python3`, `androguard`, `clamscan`, and `maldet` installed on your system.
+```
+sudo dpkg -i amd_1.0.deb
+```
 
-3. **Make the Script Executable**:
-   ```sh
-   chmod +x amd
-   ```
+
+2. .rpm
+
+```
+sudp rpm -ivh amd_1.0.0.rpm
+
+```
+
+3. Ensure all required tools are installed.
 
 ## Usage
 
-```sh
-./amd [OPTION] [ARGUMENTS]
-```
+### Basic Commands
 
-### Options
+- **Start Scanning**: 
+  ```bash
+  amd --scan
+  ```
+  This will perform a full scan on the connected Android device.
 
-- `--help`: Show the help message and exit.
-- `--scan`: Perform a full scan.
-- `--clamav`: Scan with ClamAV.
-- `--amd`: Perform AMD-specific scans.
-- `--yara`: Perform a scan with YARA rules only.
-- `--update`: Update the system and malware databases.
-- `--apk`: Scan APK files with Androguard.
-- `--scripts`: Show the number of scripts in the `SCRIPTS_DIR` and list their names.
+- **Scan with ClamAV**:
+  ```bash
+  amd --scan --clamav
+  ```
+  Performs a malware scan using ClamAV.
 
-## Directory Structure
+- **Scan with YARA**:
+  ```bash
+  amd --scan --yara <YARA_RULES_DIR>
+  ```
+  Performs a malware scan using YARA rules located in `<YARA_RULES_DIR>`.
 
-- **BASE_DIR**: `/home/$USER/AMD`
-  - **App**: Directory where app data is stored.
-  - **Scans**: Directory where scan results are saved.
-  - **Logs**: Directory where log files are stored.
-  - **Scripts**: Directory containing Python scripts for execution. Users should add their Python scripts here.
-  - **databases**: Contains `malwares.txt` with known malware package names and other relevant databases.
+- **List and Execute Scripts**:
+  ```bash
+  amd --scan --scripts
+  ```
+  Lists and executes scripts from the `SCRIPTS_DIR` directory.
 
-## Adding Custom Scripts and Malware Hashes
+- **Scan Boot Image**:
+  ```bash
+  amd --scan --bootimage
+  ```
+  Scans boot images using `abootimg`.
 
-- **Python Scripts**: Add your Python scripts to `/home/$USER/AMD/Scripts`.
-- **Malware Hashes**: Add known malware hashes to `/home/$USER/AMD/databases/malwares.txt`.
+### System Checks
 
-## Example
+- **Check Storage**:
+  ```bash
+  amd --check --storage
+  ```
 
-To perform a comprehensive scan and generate a report:
+- **Check Directories**:
+  ```bash
+  amd --check --directories
+  ```
 
-```sh
-./amd --scan
-```
+- **Check Permissions**:
+  ```bash
+  amd --check --permissions
+  ```
 
-To execute Python scripts in the `SCRIPTS_DIR`:
+- **File Type Check**:
+  ```bash
+  amd --check --filetype
+  ```
 
-```sh
-./amd --scripts
-```
+- **Strings Check**:
+  ```bash
+  amd --check --strings
+  ```
 
-## Troubleshooting
+### Bootloader
 
-- **No Device Detected**: Ensure your Android device is properly connected and ADB debugging is enabled.
-- **Storage Not Mounted**: Verify that your storage is correctly mounted and accessible.
-- **Script Errors**: Check that all required tools and dependencies are installed and properly configured.
+- **Unlock Bootloader**:
+  ```bash
+  amd --flash
+  ```
+
+### Help
+
+- **Show Help**:
+  ```bash
+  amd --help
+  ```
+
+## Script Directory Structure
+
+- **Base Directory**: `/home/$USER/AMD`
+- **App Directory**: `$BASE_DIR/App`
+- **Scans Directory**: `$BASE_DIR/Scans`
+- **Logs Directory**: `$BASE_DIR/Logs`
+- **Scripts Directory**: `$BASE_DIR/Scripts`
+- **YARA Rules Directory**: `$BASE_DIR/yara_rules`
+- **Malware Databases**: `$BASE_DIR/databases/malwares_hash.txt`, `$BASE_DIR/databases/malwares_packages.txt`
+- **Temporary Files**: Stored in `/tmp/adb_analysis_logs` and `/tmp/adb_analysis_text`.
+
+## Contribution
+
+If you want to contribute to this project, please fork the repository and submit a pull request with your changes.
 
 ## License
 
-This script is distributed under the GNU GENERAL PUBLIC LICENSE. See `LICENSE` for more details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## Contact
+## Author
 
-For any questions or issues, please contact Koosha Yeganeh at kooshakooshadv@gmail.com.
-
-### Website
-
-[kooshayeganeh.github.io](https://kooshayeganeh.github.io)
+- [Koosha Yeganeh]
+- [website](kooshayeganeh.github.io)
 

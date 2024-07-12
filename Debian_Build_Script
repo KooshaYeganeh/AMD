@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Variables
+PACKAGE_NAME="amd"
+PACKAGE_VERSION="1.0"
+MAINTAINER="Koosha Yeganeh <kooshakooshadv@gmail.com>"
+ARCHITECTURE="all"
+DESCRIPTION="Scan Android Device with ADB"
+SOURCE_DIR="."
+TARGET_DIR="${PACKAGE_NAME}-${PACKAGE_VERSION}"
+
+# Function to handle errors
+handle_error() {
+    echo "Error: $1"
+    exit 1
+}
+
+# Create necessary directories
+mkdir -p ${TARGET_DIR}/DEBIAN || handle_error "Failed to create DEBIAN directory."
+mkdir -p ${TARGET_DIR}/usr/local/bin || handle_error "Failed to create usr/local/bin directory."
+
+# Copy binary files
+if [ -f ${SOURCE_DIR}/amd ]; then
+    cp ${SOURCE_DIR}/amd ${TARGET_DIR}/usr/local/bin/
+    chmod 755 ${TARGET_DIR}/usr/local/bin/amd || handle_error "Failed to set permissions for amd."
+else
+    handle_error "Source file ${SOURCE_DIR}/amd not found."
+fi
+
+# Create the control file
+cat <<EOL > ${TARGET_DIR}/DEBIAN/control
+Package: ${PACKAGE_NAME}
+Version: ${PACKAGE_VERSION}
+Maintainer: ${MAINTAINER}
+Architecture: ${ARCHITECTURE}
+Description: ${DESCRIPTION}
+EOL
+
+# Build the package
+dpkg-deb --build ${TARGET_DIR} || handle_error "Failed to build the package."
+
+# Rename the package file
+mv ${TARGET_DIR}.deb ${PACKAGE_NAME}_${PACKAGE_VERSION}.deb || handle_error "Failed to rename the package file."
+
+# Clean up
+rm -rf ${TARGET_DIR} || handle_error "Failed to remove the target directory."
+
+echo "Package ${PACKAGE_NAME}_${PACKAGE_VERSION}.deb has been created successfully."
