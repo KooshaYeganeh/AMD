@@ -6,3 +6,5 @@ __pycache__/
 config.py
 hash.txt
 checkapp.py
+Test
+Test/*
